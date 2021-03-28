@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * 상품 정보.
+ */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProductData {

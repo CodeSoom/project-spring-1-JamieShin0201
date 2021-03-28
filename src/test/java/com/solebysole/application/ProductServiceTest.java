@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -31,6 +32,10 @@ class ProductServiceTest {
 
     private ProductRepository productRepository = mock(ProductRepository.class);
 
+    private List<Product> products;
+    private Product product1;
+    private Product product2;
+
     private ProductCreateData productCreateData;
     private ProductCreateData duplicatedProductCreateData;
 
@@ -38,8 +43,49 @@ class ProductServiceTest {
     void setUp() {
         productService = new ProductService(productRepository);
 
+        product1 = createProduct("상품1");
+        product2 = createProduct("상품2");
+
         productCreateData = createProductCreateData("만두 지갑");
         duplicatedProductCreateData = createProductCreateData("만두 지갑");
+    }
+
+    @Nested
+    @DisplayName("getProducts")
+    class Describe_getProducts {
+        @Nested
+        @DisplayName("저장된 상품이 여러개 있다면")
+        class Context_with_products {
+            @BeforeEach
+            void setUp() {
+                products = List.of(product1, product2);
+
+                given(productRepository.findAll())
+                        .willReturn(products);
+            }
+
+            @Test
+            @DisplayName("모든 상품 목록을 리턴한다.")
+            void it_returns_all_product_list() {
+                assertThat(productService.getProducts()).hasSize(2);
+            }
+        }
+
+        @Nested
+        @DisplayName("저장된 상품이 없다면")
+        class Context_without_products {
+            @BeforeEach
+            void setUp() {
+                given(productRepository.findAll())
+                        .willReturn(List.of());
+            }
+
+            @Test
+            @DisplayName("비어있는 상품 목록을 리턴한다.")
+            void it_returns_empty_product_list() {
+                assertThat(productService.getProducts()).hasSize(0);
+            }
+        }
     }
 
     @Nested
@@ -101,6 +147,20 @@ class ProductServiceTest {
                 .build();
 
         return productCreateData;
+    }
+
+    private Product createProduct(String name) {
+        Product product = Product.builder()
+                .name(name)
+                .originalPrice(50000)
+                .discountedPrice(40000)
+                .description("가죽 지갑입니다.")
+                .category(Category.WALLET)
+                .build();
+
+        product.addImage(new Image("url1"));
+
+        return product;
     }
 
 }

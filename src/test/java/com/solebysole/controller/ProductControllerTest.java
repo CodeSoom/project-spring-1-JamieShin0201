@@ -6,6 +6,7 @@ import com.solebysole.domain.Category;
 import com.solebysole.domain.Image;
 import com.solebysole.domain.Keyword;
 import com.solebysole.dto.ProductCreateData;
+import com.solebysole.dto.ProductData;
 import com.solebysole.errors.ProductNameDuplicationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,10 +24,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("ProductController 클래스")
@@ -44,15 +48,68 @@ class ProductControllerTest {
 
     private final Long savedId = 1L;
 
+    private List<ProductData> productDataList;
+    private ProductData productData1;
+    private ProductData productData2;
+
     private ProductCreateData productCreateData;
     private ProductCreateData invalidProductCreateData;
     private ProductCreateData duplicatedProductCreateData;
 
     @BeforeEach
     void setUp() {
+        productData1 = createProductData(1L, "지갑1");
+        productData2 = createProductData(2L, "지갑2");
+
         productCreateData = createProductCreateData("만두 지갑");
         invalidProductCreateData = createProductCreateData("");
         duplicatedProductCreateData = createProductCreateData("만두 지갑");
+    }
+
+    @Nested
+    @DisplayName("GET 요청은")
+    class Describe_GET {
+        @Nested
+        @DisplayName("저장된 상품이 여러개 있다면")
+        class Context_with_products {
+            @BeforeEach
+            void setUp() {
+                productDataList = List.of(productData1, productData2);
+
+                given(productService.getProducts())
+                        .willReturn(productDataList);
+            }
+
+            @Test
+            @DisplayName("모든 상품 목록과 상태코드 200 OK 를 응답한다.")
+            void it_responds_all_product_data_list() throws Exception {
+                mockMvc.perform(get("/api/products")
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(jsonPath("$", hasSize(2)))
+                        .andExpect(status().isOk());
+            }
+        }
+
+        @Nested
+        @DisplayName("저장된 상품이 없다면")
+        class Context_without_products {
+            @BeforeEach
+            void setUp() {
+                productDataList = List.of();
+
+                given(productService.getProducts())
+                        .willReturn(productDataList);
+            }
+
+            @Test
+            @DisplayName("비어있는 상품 목록과 상태코드 200 OK 를 응답한다.")
+            void it_responds_empty_product_data_list() throws Exception {
+                mockMvc.perform(get("/api/products")
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(jsonPath("$", hasSize(0)))
+                        .andExpect(status().isOk());
+            }
+        }
     }
 
     @Nested
@@ -131,6 +188,18 @@ class ProductControllerTest {
                 .build();
 
         return productCreateData;
+    }
+
+    private ProductData createProductData(Long id, String name) {
+        ProductData productData = ProductData.builder()
+                .id(id)
+                .name(name)
+                .originalPrice(50000)
+                .discountedPrice(40000)
+                .imageUrl("url")
+                .build();
+
+        return productData;
     }
 
 }

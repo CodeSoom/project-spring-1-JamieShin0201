@@ -6,7 +6,9 @@ import com.solebysole.domain.Keyword;
 import com.solebysole.domain.Product;
 import com.solebysole.domain.ProductRepository;
 import com.solebysole.dto.ProductCreateData;
+import com.solebysole.dto.ProductDetailData;
 import com.solebysole.errors.ProductNameDuplicationException;
+import com.solebysole.errors.ProductNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -16,9 +18,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -38,6 +42,9 @@ class ProductServiceTest {
 
     private ProductCreateData productCreateData;
     private ProductCreateData duplicatedProductCreateData;
+
+    private final Long existingId = 1L;
+    private final Long notExistingId = 9999L;
 
     @BeforeEach
     void setUp() {
@@ -84,6 +91,62 @@ class ProductServiceTest {
             @DisplayName("비어있는 상품 목록을 리턴한다.")
             void it_returns_empty_product_list() {
                 assertThat(productService.getProducts()).hasSize(0);
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("getProduct")
+    class Describe_getProduct {
+        @Nested
+        @DisplayName("존재하는 상품 id가 주어진다면")
+        class Context_with_existing_product_id {
+            @BeforeEach
+            void setUp() {
+                given(productRepository.findById(existingId))
+                        .willReturn(Optional.of(product1));
+            }
+
+            @Test
+            @DisplayName("찾은 상품을 리턴한다.")
+            void it_returns_the_found_product() {
+                ProductDetailData productDetailData = productService.getProduct(existingId);
+
+                assertAll(
+                        () -> assertThat(productDetailData.getName()).isEqualTo(
+                                product1.getName()),
+                        () -> assertThat(productDetailData.getOriginalPrice()).isEqualTo(
+                                product1.getOriginalPrice()),
+                        () -> assertThat(productDetailData.getDiscountedPrice()).isEqualTo(
+                                product1.getDiscountedPrice()),
+                        () -> assertThat(productDetailData.getDescription()).isEqualTo(
+                                product1.getDescription()),
+                        () -> assertThat(productDetailData.getCategory()).isEqualTo(
+                                product1.getCategory()),
+                        () -> assertThat(productDetailData.getKeywords()).isEqualTo(
+                                product1.getKeywords()),
+                        () -> assertThat(productDetailData.getImages()).isEqualTo(
+                                product1.getImages()),
+                        () -> assertThat(productDetailData.getOptions()).isEqualTo(
+                                product1.getOptions())
+                );
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하지 않는 상품 id가 주어진다면")
+        class Context_with_not_existing_product_id {
+            @BeforeEach
+            void setUp() {
+                given(productRepository.findById(notExistingId))
+                        .willReturn(Optional.empty());
+            }
+
+            @Test
+            @DisplayName("'상품을 찾을 수 없습니다.' 라는 예외가 발생한다.")
+            void it_throws_exception() {
+                assertThrows(ProductNotFoundException.class,
+                        () -> productService.getProduct(notExistingId));
             }
         }
     }

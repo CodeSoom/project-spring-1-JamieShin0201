@@ -5,9 +5,12 @@ import com.solebysole.application.ProductService;
 import com.solebysole.domain.Category;
 import com.solebysole.domain.Image;
 import com.solebysole.domain.Keyword;
+import com.solebysole.domain.Option;
 import com.solebysole.dto.ProductCreateData;
 import com.solebysole.dto.ProductData;
+import com.solebysole.dto.ProductDetailData;
 import com.solebysole.errors.ProductNameDuplicationException;
+import com.solebysole.errors.ProductNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -47,6 +50,8 @@ class ProductControllerTest {
     private ProductService productService;
 
     private final Long savedId = 1L;
+    private final Long existingId = 1L;
+    private final Long notExistingId = 9999L;
 
     private List<ProductData> productDataList;
     private ProductData productData1;
@@ -56,6 +61,8 @@ class ProductControllerTest {
     private ProductCreateData invalidProductCreateData;
     private ProductCreateData duplicatedProductCreateData;
 
+    private ProductDetailData productDetailData;
+
     @BeforeEach
     void setUp() {
         productData1 = createProductData(1L, "지갑1");
@@ -64,6 +71,8 @@ class ProductControllerTest {
         productCreateData = createProductCreateData("만두 지갑");
         invalidProductCreateData = createProductCreateData("");
         duplicatedProductCreateData = createProductCreateData("만두 지갑");
+
+        productDetailData = createProductDetailData("만두 지갑");
     }
 
     @Nested
@@ -108,6 +117,50 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(jsonPath("$", hasSize(0)))
                         .andExpect(status().isOk());
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하는 상품 id가 주어진다면")
+        class Context_with_existing_product_id {
+            @BeforeEach
+            void setUp() {
+                given(productService.getProduct(existingId))
+                        .willReturn(productDetailData);
+            }
+
+            @Test
+            @DisplayName("찾은 상품과 상태코드 200 OK 를 응답한다.")
+            void it_responds_the_found_product_and_status_code_200() throws Exception {
+                mockMvc.perform(get("/api/products/{id}", existingId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(jsonPath("name").exists())
+                        .andExpect(jsonPath("originalPrice").exists())
+                        .andExpect(jsonPath("discountedPrice").exists())
+                        .andExpect(jsonPath("description").exists())
+                        .andExpect(jsonPath("category").exists())
+                        .andExpect(jsonPath("keywords").exists())
+                        .andExpect(jsonPath("images").exists())
+                        .andExpect(jsonPath("options").exists())
+                        .andExpect(status().isOk());
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하지 않는 상품 id가 주어진다면")
+        class Context_with_not_existing_product_id {
+            @BeforeEach
+            void setUp() {
+                given(productService.getProduct(notExistingId))
+                        .willThrow(new ProductNotFoundException(notExistingId));
+            }
+
+            @Test
+            @DisplayName("상태코드 404 Not Found 를 응답한다.")
+            void it_responds_status_code_404() throws Exception {
+                mockMvc.perform(get("/api/products/{id}", notExistingId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isNotFound());
             }
         }
     }
@@ -169,12 +222,8 @@ class ProductControllerTest {
     }
 
     private ProductCreateData createProductCreateData(String name) {
-        Set<Keyword> keywords = new HashSet<>(
-                Arrays.asList(new Keyword("가죽"), new Keyword("지갑")));
-
-        List<Image> images = Arrays.asList(
-                new Image("url1"),
-                new Image("url2"));
+        Set<Keyword> keywords = createKeywords();
+        List<Image> images = createImages();
 
         ProductCreateData productCreateData = ProductCreateData.builder()
                 .name(name)
@@ -200,6 +249,50 @@ class ProductControllerTest {
                 .build();
 
         return productData;
+    }
+
+    private ProductDetailData createProductDetailData(String name) {
+        Set<Keyword> keywords = createKeywords();
+        List<Image> images = createImages();
+
+        List<Option> options = createOptions();
+
+        productDetailData = ProductDetailData.builder()
+                .name(name)
+                .originalPrice(50000)
+                .discountedPrice(40000)
+                .description("가죽 지갑입니다.")
+                .category(Category.WALLET)
+                .keywords(keywords)
+                .images(images)
+                .options(options)
+                .build();
+
+        return productDetailData;
+    }
+
+    private HashSet<Keyword> createKeywords() {
+        return new HashSet<>(
+                Arrays.asList(new Keyword("가죽"), new Keyword("지갑")));
+    }
+
+    private List<Image> createImages() {
+        return Arrays.asList(
+                new Image("url1"),
+                new Image("url2"));
+    }
+
+    private List<Option> createOptions() {
+        return Arrays.asList(
+                new Option("색상",
+                        new Option("빨강", 1000),
+                        new Option("노랑", 2000)
+                ),
+                new Option("추가 옵션",
+                        new Option("끈", 3000),
+                        new Option("줄", 4000)
+                )
+        );
     }
 
 }

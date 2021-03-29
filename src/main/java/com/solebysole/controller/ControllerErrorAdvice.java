@@ -2,6 +2,7 @@ package com.solebysole.controller;
 
 import com.solebysole.dto.ErrorResponse;
 import com.solebysole.errors.ProductNameDuplicationException;
+import com.solebysole.errors.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,6 +19,13 @@ public class ControllerErrorAdvice {
         ErrorResponse errorResponse = new ErrorResponse(e);
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleProductNameDuplication(ProductNotFoundException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e);
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
 }

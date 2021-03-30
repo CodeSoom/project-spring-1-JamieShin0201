@@ -4,7 +4,9 @@ import com.solebysole.domain.Product;
 import com.solebysole.domain.ProductRepository;
 import com.solebysole.dto.ProductCreateData;
 import com.solebysole.dto.ProductData;
+import com.solebysole.dto.ProductDetailData;
 import com.solebysole.errors.ProductNameDuplicationException;
+import com.solebysole.errors.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,19 @@ public class ProductService {
     }
 
     /**
+     * 주어진 id에 해당하는 상품 상세 정보를 리턴합니다.
+     *
+     * @param id 상품의 식별자
+     * @return 주어진 id에 해당하는 상품 상세 정보
+     * @throws ProductNotFoundException 상품을 찾을 수 없는 경우
+     */
+    public ProductDetailData getProduct(Long id) throws ProductNotFoundException {
+        Product product = findProductById(id);
+
+        return ProductDetailData.of(product);
+    }
+
+    /**
      * 주어진 상품 정보로 상품을 생성하고, 상품의 식별자를 리턴합니다.
      *
      * @param productCreateData 상품 정보
@@ -55,6 +70,11 @@ public class ProductService {
         productRepository.save(product);
 
         return product.getId();
+    }
+
+    private Product findProductById(Long id) throws ProductNotFoundException {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.solebysole.domain;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 상품 저장소.
@@ -8,6 +9,8 @@ import java.util.List;
 public interface ProductRepository {
 
     List<Product> findAll();
+
+    Optional<Product> findById(Long id);
 
     Product save(Product product);
 

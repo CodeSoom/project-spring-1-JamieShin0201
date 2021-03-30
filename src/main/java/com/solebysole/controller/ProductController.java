@@ -3,10 +3,12 @@ package com.solebysole.controller;
 import com.solebysole.application.ProductService;
 import com.solebysole.dto.ProductCreateData;
 import com.solebysole.dto.ProductData;
+import com.solebysole.dto.ProductDetailData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +35,17 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductData>> list() {
         return ResponseEntity.ok(productService.getProducts());
+    }
+
+    /**
+     * 주어진 id에 해당하는 상품 상세 정보를 응답합니다.
+     *
+     * @param id 상품의 식별자
+     * @return 주어진 id에 해당하는 상품 상세 정보
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDetailData> findOne(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.getProduct(id));
     }
 
     /**

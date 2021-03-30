@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -44,6 +45,16 @@ public class Option {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public Option(String name, int additionalPrice) {
+        this.name = name;
+        this.additionalPrice = additionalPrice;
+    }
+
+    public Option(String name, Option... children) {
+        this.name = name;
+        this.children = Arrays.asList(children);
+    }
 
     public void setParent(Option parent) {
         this.parent = parent;

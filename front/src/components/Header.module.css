@@ -1,0 +1,63 @@
+.header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 7vh;
+  list-style: none;
+  padding-left: 0;
+  width: 1056px;
+  margin: 0 auto;
+}
+
+.logo {
+  border-radius: 50%;
+  height: 65%;
+}
+
+.search {
+  display: flex;
+  align-content: center;
+  flex-basis: 40%;
+  height: 40%;
+  border: 2px solid #d7ccc8;
+  border-radius: 16px;
+}
+
+.input {
+  width: 90%;
+  font-size: 1rem;
+  outline: 0;
+  border: 0;
+  margin-left: 0.8em;
+}
+
+.button {
+  background-color: white;
+  outline: 0;
+  cursor: pointer;
+  border: 0;
+  width: 10%;
+  margin-right: 0.8em;
+  font-size: 1.2em;
+  color: #a69b97;
+}
+
+.navigation {
+  display: flex;
+  list-style: none;
+}
+
+.cart > a,
+.login > a {
+  padding: 0.2em 1em;
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
+  margin-right: 0.5em;
+  font-size: 1.2rem;
+}
+
+.cart:hover,
+.login:hover {
+  opacity: 0.5;
+}

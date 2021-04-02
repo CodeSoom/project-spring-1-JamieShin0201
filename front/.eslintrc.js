@@ -53,5 +53,6 @@ module.exports = {
     'react/prop-types': 'off',
     'linebreak-style': 'off',
     'no-proto': 'off',
+    'import/no-unresolved': 'off',
   },
 };

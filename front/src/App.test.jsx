@@ -32,4 +32,12 @@ describe('App', () => {
       expect(container).toHaveTextContent('wallet');
     });
   });
+
+  context('with path /about', () => {
+    it('renders the about page', () => {
+      const { container } = renderApp({ path: '/about' });
+
+      expect(container).toHaveTextContent('SOLE by SOLE');
+    });
+  });
 });

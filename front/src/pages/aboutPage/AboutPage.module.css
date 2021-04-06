@@ -1,0 +1,50 @@
+.container {
+  width: 1056px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10em;
+  list-style: none;
+  padding: 0;
+}
+
+.content > li > h1 {
+  font-size: 1.1em;
+}
+
+.content > li > p {
+  font-size: 0.8em;
+  margin: 0.2em;
+}
+
+.idea,
+.ideal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.idea > img,
+.ideal > img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+}
+
+.ideal {
+  margin-top: 10em;
+}
+
+.writer {
+  font-weight: bold;
+}
+
+@media screen and (max-width: 48rem) {
+  .container {
+    width: 100%;
+  }
+}

@@ -1,0 +1,11 @@
+.container {
+  width: 1056px;
+  margin: 0 auto;
+  margin-top: 20em;
+}
+
+@media screen and (max-width: 48rem) {
+  .container {
+    width: 100%;
+  }
+}

@@ -33,8 +33,6 @@ it('renders products', async () => {
 
   PRODUCTS.forEach((product) => {
     expect(container).toHaveTextContent(product.name);
-    expect(container).toHaveTextContent(product.originalPrice);
-    expect(container).toHaveTextContent(product.discountedPrice);
   });
 
   global.fetch.mockRestore();

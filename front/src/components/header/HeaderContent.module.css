@@ -7,6 +7,10 @@
   color: white;
   font-size: 1.1em;
   font-weight: bold;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
 }
 
 .descrption {

@@ -1,4 +1,4 @@
-import fetchProducts from './api';
+import { fetchProducts } from './api';
 
 import PRODUCTS from '../../fixtures/products';
 

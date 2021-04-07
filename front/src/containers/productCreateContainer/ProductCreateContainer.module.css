@@ -1,0 +1,119 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.subContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.images {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mainImage {
+  height: 30vh;
+}
+
+.sub {
+  width: 100%;
+  display: flex;
+  margin-top: 1em;
+  justify-content: space-around;
+}
+
+.subImage {
+  width: 25%;
+  margin: 1em;
+  height: 7vh;
+}
+
+.info {
+  width: 35%;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0 1em;
+}
+
+.content {
+  width: 100%;
+}
+
+.category {
+  width: 200px;
+  height: 40px;
+  font-size: 1.1em;
+  padding: 0.2em;
+}
+
+.title,
+.originalPrice,
+.discountedPrice {
+  font-size: 1.1em;
+  padding: 0.4em;
+  width: 200px;
+}
+
+.title {
+  width: 250px;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5em;
+}
+
+.content > p {
+  width: 100%;
+  text-align: left;
+}
+
+.content > textarea {
+  width: 100%;
+  height: 50vh;
+  resize: none;
+  font-size: 1.2em;
+}
+
+.buttons {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin: 2em 0 4em 0;
+}
+
+.tempBtn,
+.saveBtn {
+  font-size: 1.2em;
+  padding: 0.8em;
+  margin: 0.3em;
+  outline: 0;
+  cursor: pointer;
+}
+
+.saveBtn {
+  background-color: black;
+  opacity: 0.8;
+  color: white;
+}
+
+.tempBtn {
+  background-color: white;
+}
+
+.tempBtn:hover,
+.saveBtn:hover {
+  opacity: 0.5;
+}

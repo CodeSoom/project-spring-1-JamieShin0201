@@ -4,6 +4,8 @@ import { render } from '@testing-library/react';
 
 import Product from './Product';
 
+import formatMoney from '../../utils/util';
+
 describe('Product', () => {
   function rendersProduct(product) {
     return render(<Product product={product} />);
@@ -20,7 +22,7 @@ describe('Product', () => {
     const { container } = rendersProduct(product);
 
     expect(container).toHaveTextContent(product.name);
-    expect(container).toHaveTextContent(product.originalPrice);
-    expect(container).toHaveTextContent(product.discountedPrice);
+    expect(container).toHaveTextContent(formatMoney(product.originalPrice));
+    expect(container).toHaveTextContent(formatMoney(product.discountedPrice));
   });
 });

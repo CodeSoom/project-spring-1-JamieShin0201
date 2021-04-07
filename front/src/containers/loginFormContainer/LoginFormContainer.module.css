@@ -1,0 +1,45 @@
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+}
+
+.email,
+.password,
+.loginBtn,
+.signUpBtn {
+  font-size: 1.2em;
+  padding: 0.6em;
+  margin: 0.5em;
+  width: 600px;
+}
+
+.loginBtn,
+.signUpBtn {
+  outline: 0;
+  cursor: pointer;
+}
+
+.loginBtn {
+  background-color: black;
+  opacity: 0.8;
+  color: white;
+}
+
+.signUpBtn {
+  background-color: white;
+}
+
+.loginBtn:hover,
+.signUpBtn:hover {
+  opacity: 0.5;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7em;
+  margin: 0.4em;
+  width: 600px;
+}

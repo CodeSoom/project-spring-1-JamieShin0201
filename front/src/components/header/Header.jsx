@@ -1,10 +1,16 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styles from './Header.module.css';
 
 export default function Header({ color }) {
   const [scrolled, setScrolled] = useState(true);
+
   const documentRef = useRef(document);
+
+  const history = useHistory();
 
   const handleScroll = () => {
     const { pageYOffset } = window;
@@ -17,6 +23,11 @@ export default function Header({ color }) {
     return () =>
       documentRef.current.removeEventListener('scroll', handleScroll);
   });
+
+  function handleClick(link) {
+    const url = `/${link}`;
+    history.push(url);
+  }
 
   const scrollStyle = scrolled ? '' : styles.scroll;
   const darkStyle = color === 'dark' ? styles.dark : '';
@@ -40,10 +51,10 @@ export default function Header({ color }) {
           <li className={styles.search}>
             <i className={`fas fa-search ${styles.searchLogo}`} />
           </li>
-          <li className={styles.login}>
+          <li className={styles.login} onClick={() => handleClick('login')}>
             <i className={`fas fa-user ${styles.loginLogo}`} />
           </li>
-          <li className={styles.cart}>
+          <li className={styles.cart} onClick={() => handleClick('cart')}>
             <i className={`fas fa-shopping-cart ${styles.cartLogo}`} />
           </li>
         </ul>

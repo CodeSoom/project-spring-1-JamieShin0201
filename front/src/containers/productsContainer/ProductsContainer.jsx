@@ -4,7 +4,7 @@ import styles from './ProductsContainer.module.css';
 
 import Product from '../../components/product/Product';
 
-import fetchProducts from '../../services/api';
+import { fetchProducts } from '../../services/api';
 
 export default function ProductsContainer({ onClickProduct }) {
   const [products, setProducts] = useState([]);

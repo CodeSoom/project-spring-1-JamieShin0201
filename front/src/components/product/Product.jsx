@@ -1,8 +1,15 @@
 import React from 'react';
 import styles from './Product.module.css';
 
+import formatMoney from '../../utils/util';
+
 export default function Product({ product, onClickProduct }) {
-  const { name, imageUrl, originalPrice, discountedPrice } = product;
+  const { imageUrl, name, originalPrice, discountedPrice } = product;
+
+  const discountPercent =
+    discountedPrice < originalPrice
+      ? ((originalPrice - discountedPrice) / originalPrice) * 100
+      : null;
 
   function handleClick() {
     return (event) => {
@@ -13,19 +20,39 @@ export default function Product({ product, onClickProduct }) {
 
   return (
     <li className={styles.container}>
-      <a href={`/product/${product.id}`} onClick={handleClick}>
-        <div className={styles.product}>
-          <img className={styles.logo} src={imageUrl} alt="product" />
-          <p className={styles.maker}>solebysole</p>
-          <p className={styles.name}>{name}</p>
-          <p className={styles.original}>
-            <span className={styles.originalPrice}>{originalPrice}원</span>
-            <span className={styles.discountPercent}>10%</span>
-          </p>
-          <p className={styles.discounted}>
-            <span className={styles.discountedPrice}>{discountedPrice}</span>
-            <span className={styles.suffix}>원</span>
-          </p>
+      <a href={`/products/${product.id}`} onClick={handleClick}>
+        <div
+          className={styles.product}
+          style={{
+            background: `url(${imageUrl}) center/cover no-repeat`,
+          }}
+        />
+        <div className={styles.info}>
+          <p>{name}</p>
+          {discountPercent && (
+            <>
+              <p className={styles.original}>
+                <span className={styles.originalPrice}>
+                  {formatMoney(originalPrice)}
+                </span>
+                <span className={styles.discountPercent}>
+                  {discountPercent}%
+                </span>
+              </p>
+              <p className={styles.discounted}>
+                <span className={styles.discountedPrice}>
+                  {formatMoney(discountedPrice)}
+                </span>
+              </p>
+            </>
+          )}
+          {!discountPercent && (
+            <p className={styles.discounted}>
+              <span className={styles.discountedPrice}>
+                {formatMoney(originalPrice)}
+              </span>
+            </p>
+          )}
         </div>
       </a>
     </li>

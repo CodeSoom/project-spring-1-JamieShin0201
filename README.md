@@ -1,4 +1,5 @@
-# Sole by Sole
+# [Sole by Sole](https://solebysole.netlify.app/)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/56c5eff2-ce6c-475f-bfae-c425ec11e71f/deploy-status)](https://app.netlify.com/sites/solebysole/deploys)
 
 ## :sunny: 서비스 소개
 나만의 지갑, 나만의 소품들이 필요하지 않으신가요?<br>

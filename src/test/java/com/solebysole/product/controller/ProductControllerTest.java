@@ -1,16 +1,16 @@
-package com.solebysole.controller;
+package com.solebysole.product.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.solebysole.application.ProductService;
-import com.solebysole.domain.Category;
-import com.solebysole.domain.Image;
-import com.solebysole.domain.Keyword;
-import com.solebysole.domain.Option;
-import com.solebysole.dto.ProductCreateData;
-import com.solebysole.dto.ProductData;
-import com.solebysole.dto.ProductDetailData;
-import com.solebysole.errors.ProductNameDuplicationException;
-import com.solebysole.errors.ProductNotFoundException;
+import com.solebysole.product.application.ProductService;
+import com.solebysole.product.domain.Category;
+import com.solebysole.product.domain.Image;
+import com.solebysole.product.domain.Keyword;
+import com.solebysole.product.domain.Option;
+import com.solebysole.product.dto.ProductCreateData;
+import com.solebysole.product.dto.ProductData;
+import com.solebysole.product.dto.ProductDetailData;
+import com.solebysole.common.errors.ProductNameDuplicationException;
+import com.solebysole.common.errors.ProductNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

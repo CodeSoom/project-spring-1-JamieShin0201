@@ -1,4 +1,4 @@
-package com.solebysole.domain;
+package com.solebysole.product.domain;
 
 import java.util.List;
 import java.util.Optional;

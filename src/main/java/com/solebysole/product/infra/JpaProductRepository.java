@@ -1,7 +1,7 @@
-package com.solebysole.infra;
+package com.solebysole.product.infra;
 
-import com.solebysole.domain.Product;
-import com.solebysole.domain.ProductRepository;
+import com.solebysole.product.domain.Product;
+import com.solebysole.product.domain.ProductRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

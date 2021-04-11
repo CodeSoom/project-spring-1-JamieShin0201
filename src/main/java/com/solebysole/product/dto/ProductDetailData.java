@@ -1,10 +1,10 @@
-package com.solebysole.dto;
+package com.solebysole.product.dto;
 
-import com.solebysole.domain.Category;
-import com.solebysole.domain.Image;
-import com.solebysole.domain.Keyword;
-import com.solebysole.domain.Option;
-import com.solebysole.domain.Product;
+import com.solebysole.product.domain.Category;
+import com.solebysole.product.domain.Image;
+import com.solebysole.product.domain.Keyword;
+import com.solebysole.product.domain.Option;
+import com.solebysole.product.domain.Product;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

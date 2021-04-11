@@ -1,4 +1,4 @@
-package com.solebysole.errors;
+package com.solebysole.common.errors;
 
 /**
  * 상품 이름 중복 예외.

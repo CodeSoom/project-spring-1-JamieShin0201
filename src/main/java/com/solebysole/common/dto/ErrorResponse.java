@@ -1,4 +1,4 @@
-package com.solebysole.dto;
+package com.solebysole.common.dto;
 
 /**
  * 에러 응답.

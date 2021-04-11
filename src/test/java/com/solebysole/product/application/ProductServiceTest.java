@@ -1,14 +1,14 @@
-package com.solebysole.application;
+package com.solebysole.product.application;
 
-import com.solebysole.domain.Category;
-import com.solebysole.domain.Image;
-import com.solebysole.domain.Keyword;
-import com.solebysole.domain.Product;
-import com.solebysole.domain.ProductRepository;
-import com.solebysole.dto.ProductCreateData;
-import com.solebysole.dto.ProductDetailData;
-import com.solebysole.errors.ProductNameDuplicationException;
-import com.solebysole.errors.ProductNotFoundException;
+import com.solebysole.product.domain.Category;
+import com.solebysole.product.domain.Image;
+import com.solebysole.product.domain.Keyword;
+import com.solebysole.product.domain.Product;
+import com.solebysole.product.domain.ProductRepository;
+import com.solebysole.product.dto.ProductCreateData;
+import com.solebysole.product.dto.ProductDetailData;
+import com.solebysole.common.errors.ProductNameDuplicationException;
+import com.solebysole.common.errors.ProductNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

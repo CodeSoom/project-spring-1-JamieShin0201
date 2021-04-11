@@ -1,7 +1,7 @@
-package com.solebysole.dto;
+package com.solebysole.product.dto;
 
-import com.solebysole.domain.Image;
-import com.solebysole.domain.Product;
+import com.solebysole.product.domain.Image;
+import com.solebysole.product.domain.Product;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

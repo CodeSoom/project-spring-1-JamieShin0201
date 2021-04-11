@@ -1,12 +1,12 @@
-package com.solebysole.application;
+package com.solebysole.product.application;
 
-import com.solebysole.domain.Product;
-import com.solebysole.domain.ProductRepository;
-import com.solebysole.dto.ProductCreateData;
-import com.solebysole.dto.ProductData;
-import com.solebysole.dto.ProductDetailData;
-import com.solebysole.errors.ProductNameDuplicationException;
-import com.solebysole.errors.ProductNotFoundException;
+import com.solebysole.product.domain.Product;
+import com.solebysole.product.domain.ProductRepository;
+import com.solebysole.product.dto.ProductCreateData;
+import com.solebysole.product.dto.ProductData;
+import com.solebysole.product.dto.ProductDetailData;
+import com.solebysole.common.errors.ProductNameDuplicationException;
+import com.solebysole.common.errors.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

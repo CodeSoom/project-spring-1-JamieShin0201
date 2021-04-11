@@ -1,4 +1,4 @@
-package com.solebysole.domain;
+package com.solebysole.product.domain;
 
 /**
  * 상품 카테고리.

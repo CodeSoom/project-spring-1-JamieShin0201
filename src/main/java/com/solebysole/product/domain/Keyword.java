@@ -1,4 +1,4 @@
-package com.solebysole.domain;
+package com.solebysole.product.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
@@ -25,7 +25,7 @@ public class Keyword {
     @GeneratedValue
     @Column(name = "keyword_id")
     private Long id;
-    
+
     private String name;
 
     @JsonIgnore

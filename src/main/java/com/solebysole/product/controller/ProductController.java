@@ -1,9 +1,9 @@
-package com.solebysole.controller;
+package com.solebysole.product.controller;
 
-import com.solebysole.application.ProductService;
-import com.solebysole.dto.ProductCreateData;
-import com.solebysole.dto.ProductData;
-import com.solebysole.dto.ProductDetailData;
+import com.solebysole.product.application.ProductService;
+import com.solebysole.product.dto.ProductCreateData;
+import com.solebysole.product.dto.ProductData;
+import com.solebysole.product.dto.ProductDetailData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

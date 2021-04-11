@@ -1,4 +1,4 @@
-package com.solebysole.domain;
+package com.solebysole.product.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;

@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 
 import LoginFormContainer from './LoginFormContainer';
 
-describe('ProductCreateContainer', () => {
+describe('LoginFormContainer', () => {
   function rendersLoginFormContainer() {
     return render(<LoginFormContainer />);
   }

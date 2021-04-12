@@ -8,6 +8,7 @@ import Footer from './components/footer/Footer';
 import HomePage from './pages/homePage/HomePage';
 import AboutPage from './pages/aboutPage/AboutPage';
 import LoginPage from './pages/loginPage/LoginPage';
+import SignUpPage from './pages/signUpPage/SignUpPage';
 import ProductsPage from './pages/productsPage/ProductsPage';
 import ProductPage from './pages/productPage/ProductPage';
 import ProductCreatePage from './pages/productCreatePage/ProductCreatePage';
@@ -29,6 +30,10 @@ function App({ FileInput }) {
         <Route exact path="/login">
           <Header color="dark" />
           <LoginPage />
+        </Route>
+        <Route exact path="/signUp">
+          <Header color="dark" />
+          <SignUpPage />
         </Route>
         <Route exact path="/products">
           <Header color="dark" />

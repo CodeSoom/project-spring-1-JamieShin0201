@@ -1,7 +1,14 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import styles from './LoginFormContainer.module.css';
 
 export default function LoginFormContainer() {
+  const history = useHistory();
+
+  function onSignUp() {
+    history.push('signUp');
+  }
+
   return (
     <section className={styles.loginForm}>
       <input className={styles.email} type="text" placeholder="email" />
@@ -20,7 +27,7 @@ export default function LoginFormContainer() {
       <button type="button" className={styles.loginBtn}>
         Login
       </button>
-      <button type="button" className={styles.signUpBtn}>
+      <button type="button" className={styles.signUpBtn} onClick={onSignUp}>
         Sign up
       </button>
     </section>

@@ -1,0 +1,38 @@
+.signUpForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+}
+
+.email,
+.name,
+.password,
+.signUpBtn,
+.backBtn {
+  font-size: 1.2em;
+  padding: 0.6em;
+  margin: 0.5em;
+  width: 600px;
+}
+
+.signUpBtn,
+.backBtn {
+  outline: 0;
+  cursor: pointer;
+}
+
+.signUpBtn {
+  background-color: black;
+  opacity: 0.8;
+  color: white;
+}
+
+.backBtn {
+  background-color: white;
+}
+
+.signUpBtn:hover,
+.backBtn:hover {
+  opacity: 0.5;
+}

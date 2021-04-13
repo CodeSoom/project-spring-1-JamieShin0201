@@ -1,6 +1,7 @@
 package com.solebysole.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.solebysole.authentication.service.AuthenticationService;
 import com.solebysole.common.errors.UserEmailDuplicationException;
 import com.solebysole.user.application.UserService;
 import com.solebysole.user.dto.UserRegisterData;
@@ -32,6 +33,9 @@ class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private AuthenticationService authenticationService;
 
     private final Long savedId = 1L;
 

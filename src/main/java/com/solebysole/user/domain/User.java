@@ -65,4 +65,15 @@ public class User {
         this.password = passwordEncoder.encode(password);
     }
 
+    /**
+     * 주어진 비밀번호와 현재 비밀번호가 일치하고, 회원이 삭제되지 않았다면 true 를 리턴합니다.
+     *
+     * @param password 비밀번호
+     * @param passwordEncoder 패스워드 인코더
+     */
+    public boolean authenticate(String password,
+                                PasswordEncoder passwordEncoder) {
+        return !deleted && passwordEncoder.matches(password, this.password);
+    }
+
 }

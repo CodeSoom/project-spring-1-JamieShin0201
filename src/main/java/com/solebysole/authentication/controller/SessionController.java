@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 회원 인증과 관련된 HTTP 요청 처리를 담당합니다.
  */
-
 @RequiredArgsConstructor
 @RequestMapping("/session")
 @RestController

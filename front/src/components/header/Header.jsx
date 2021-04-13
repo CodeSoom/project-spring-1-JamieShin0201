@@ -3,10 +3,12 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { loadItem } from '../../services/storage';
 import styles from './Header.module.css';
 
 export default function Header({ color }) {
   const [scrolled, setScrolled] = useState(true);
+  const accessToken = loadItem('accessToken');
 
   const documentRef = useRef(document);
 
@@ -51,7 +53,13 @@ export default function Header({ color }) {
           <li className={styles.search}>
             <i className={`fas fa-search ${styles.searchLogo}`} />
           </li>
-          <li className={styles.login} onClick={() => handleClick('login')}>
+          <li
+            className={styles.login}
+            onClick={() => {
+              const path = accessToken ? 'me' : 'login';
+              return handleClick(path);
+            }}
+          >
             <i className={`fas fa-user ${styles.loginLogo}`} />
           </li>
           <li className={styles.cart} onClick={() => handleClick('cart')}>

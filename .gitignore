@@ -36,3 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 front/yarn.lock
+
+src/main/resources/application-jwt.yml

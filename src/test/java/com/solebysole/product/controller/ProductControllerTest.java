@@ -1,6 +1,9 @@
 package com.solebysole.product.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.solebysole.authentication.service.AuthenticationService;
+import com.solebysole.common.errors.ProductNameDuplicationException;
+import com.solebysole.common.errors.ProductNotFoundException;
 import com.solebysole.product.application.ProductService;
 import com.solebysole.product.domain.Category;
 import com.solebysole.product.domain.Image;
@@ -9,8 +12,6 @@ import com.solebysole.product.domain.Option;
 import com.solebysole.product.dto.ProductCreateData;
 import com.solebysole.product.dto.ProductData;
 import com.solebysole.product.dto.ProductDetailData;
-import com.solebysole.common.errors.ProductNameDuplicationException;
-import com.solebysole.common.errors.ProductNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -48,6 +49,9 @@ class ProductControllerTest {
 
     @MockBean
     private ProductService productService;
+
+    @MockBean
+    private AuthenticationService authenticationService;
 
     private final Long savedId = 1L;
     private final Long existingId = 1L;

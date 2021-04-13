@@ -37,3 +37,5 @@ insert into keyword (name, product_id, keyword_id)values ('지갑', 5, 5);
 insert into option (additional_price, name, parent_id, product_id, id) values (0, '색상', null, 5, 13);
 insert into option (additional_price, name, parent_id, product_id, id) values (1000, '갈색', 13, null, 14);
 insert into option (additional_price, name, parent_id, product_id, id) values (2000, '검정', 13, null, 15);
+
+insert into user (deleted, email, name, password, provider, provider_id, role, user_id) values(false, 'test@test.com', 'jamie', '$2a$10$QBqPRhegnOKycBUibWxvouXh5.obp8uhjf87Rht4fL50vNyis0Jpm', 'LOCAL', null, 0, 1)

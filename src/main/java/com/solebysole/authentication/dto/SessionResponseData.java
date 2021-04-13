@@ -15,4 +15,5 @@ public class SessionResponseData {
     private SessionResponseData(String accessToken) {
         this.accessToken = accessToken;
     }
+
 }

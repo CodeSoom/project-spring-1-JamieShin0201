@@ -1,9 +1,11 @@
 package com.solebysole.user.application;
 
 import com.solebysole.common.errors.UserEmailDuplicationException;
+import com.solebysole.user.domain.Role;
 import com.solebysole.user.domain.User;
 import com.solebysole.user.domain.UserRepository;
 import com.solebysole.user.dto.UserRegisterData;
+import com.solebysole.user.dto.UserUpdateData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,6 +29,9 @@ class UserServiceTest {
     private UserRegisterData userRegisterData;
     private UserRegisterData duplicateUserRegisterData;
 
+    private User user;
+    private UserUpdateData userUpdateData;
+
     @BeforeEach
     void setUp() {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -44,6 +49,17 @@ class UserServiceTest {
                 .email("duplicate@test.com")
                 .name("test")
                 .password("12345678")
+                .build();
+
+        user = User.builder()
+                .id(1L)
+                .email("test@test.com")
+                .password("abcd1234")
+                .role(Role.ROLE_USER)
+                .build();
+
+        userUpdateData = UserUpdateData.builder()
+                .name("newName")
                 .build();
     }
 
@@ -82,6 +98,22 @@ class UserServiceTest {
             void it_throws_exception() {
                 assertThrows(UserEmailDuplicationException.class,
                         () -> userService.registerUser(duplicateUserRegisterData));
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("updateUser")
+    class Describe_updateUser {
+        @Nested
+        @DisplayName("회원과 회원 수정 정보가 주어진다면")
+        class Context_with_valid_user_and_user_update_data {
+            @Test
+            @DisplayName("회원을 변경한다.")
+            void it_change_user() {
+                userService.updateUser(user, userUpdateData);
+
+                verify(userRepository).save(any(User.class));
             }
         }
     }

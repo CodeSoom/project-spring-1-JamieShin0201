@@ -55,6 +55,15 @@ public class User {
     }
 
     /**
+     * 주어진 회원으로 현재 회원을 갱신합니다.
+     *
+     * @param source 갱신할 회원
+     */
+    public void changeWith(User source) {
+        name = source.name;
+    }
+
+    /**
      * 주어진 비밀번호로 현재 비밀번호를 변경합니다.
      *
      * @param password 변경할 비밀번호

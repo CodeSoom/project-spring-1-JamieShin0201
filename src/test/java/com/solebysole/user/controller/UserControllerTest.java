@@ -8,6 +8,7 @@ import com.solebysole.user.application.UserService;
 import com.solebysole.user.domain.Role;
 import com.solebysole.user.domain.User;
 import com.solebysole.user.dto.UserRegisterData;
+import com.solebysole.user.dto.UserUpdateData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -21,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -53,6 +55,9 @@ class UserControllerTest {
     private UserRegisterData invalidUserRegisterData;
     private UserRegisterData duplicateUserRegisterData;
 
+    private UserUpdateData userUpdateData;
+    private UserUpdateData invalidUserUpdateData;
+
     private User user;
 
     @BeforeEach
@@ -60,6 +65,15 @@ class UserControllerTest {
         userRegisterData = createUserRegisterData("test@test.com");
         invalidUserRegisterData = createUserRegisterData("");
         duplicateUserRegisterData = createUserRegisterData("duplicate@test.com");
+
+        userUpdateData = UserUpdateData.builder()
+                .name("userName")
+                .build();
+
+        invalidUserUpdateData = UserUpdateData.builder()
+                .name("")
+                .build();
+
         user = User.builder()
                 .id(existingId)
                 .email("test@test.com")
@@ -72,45 +86,8 @@ class UserControllerTest {
                 .willReturn(1L);
         given(authenticationService.parseToken(INVALID_TOKEN))
                 .willThrow(new InvalidTokenException(INVALID_TOKEN));
-    }
-
-    @Nested
-    @DisplayName("GET 요청은")
-    class Describe_GET {
-        @Nested
-        @DisplayName("올바른 사용자가 요청한다면")
-        class Context_with_valid_user {
-            @BeforeEach
-            void setUp() {
-                given(authenticationService.loadUserById(existingId))
-                        .willReturn(user);
-            }
-
-            @Test
-            @DisplayName("사용자 정보와 상태코드 200 OK 를 응답한다.")
-            void it_responds_status_code_401() throws Exception {
-                mockMvc.perform(get("/api/users/me")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + VALID_TOKEN))
-                        .andExpect(jsonPath("id").exists())
-                        .andExpect(jsonPath("email").exists())
-                        .andExpect(jsonPath("name").exists())
-                        .andExpect(jsonPath("password").exists())
-                        .andExpect(status().isOk());
-            }
-        }
-
-        @Nested
-        @DisplayName("알수 없는 사용자가 요청한다면")
-        class Context_with_anonymous_user {
-            @Test
-            @DisplayName("상태코드 401 Unauthorized 를 응답한다.")
-            void it_responds_status_code_401() throws Exception {
-                mockMvc.perform(get("/api/users/me")
-                        .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isUnauthorized());
-            }
-        }
+        given(authenticationService.loadUserById(existingId))
+                .willReturn(user);
     }
 
     @Nested
@@ -165,6 +142,84 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(duplicateUserRegisterData)))
                         .andExpect(status().isBadRequest());
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("GET /me 요청은")
+    class Describe_GET {
+        @Nested
+        @DisplayName("올바른 사용자가 요청한다면")
+        class Context_with_valid_user {
+            @Test
+            @DisplayName("사용자 정보와 상태코드 200 OK 를 응답한다.")
+            void it_responds_status_code_200() throws Exception {
+                mockMvc.perform(get("/api/users/me")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + VALID_TOKEN))
+                        .andExpect(jsonPath("id").exists())
+                        .andExpect(jsonPath("email").exists())
+                        .andExpect(jsonPath("name").exists())
+                        .andExpect(jsonPath("password").exists())
+                        .andExpect(status().isOk());
+            }
+        }
+
+        @Nested
+        @DisplayName("알수 없는 사용자가 요청한다면")
+        class Context_with_anonymous_user {
+            @Test
+            @DisplayName("상태코드 401 Unauthorized 를 응답한다.")
+            void it_responds_status_code_401() throws Exception {
+                mockMvc.perform(get("/api/users/me")
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isUnauthorized());
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("PATCH /me 요청은")
+    class Describe_PATCH {
+        @Nested
+        @DisplayName("올바른 수정 정보가 주어진다면")
+        class Context_with_valid_user_update_data {
+            @Test
+            @DisplayName("사용자 정보와 상태코드 200 OK 를 응답한다.")
+            void it_responds_status_code_200() throws Exception {
+                mockMvc.perform(patch("/api/users/me")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
+                        .content(objectMapper.writeValueAsString(userUpdateData)))
+                        .andExpect(status().isOk());
+            }
+        }
+
+        @Nested
+        @DisplayName("올바르지 않은 수정 정보가 주어진다면")
+        class Context_with_invalid_user_update_data {
+            @Test
+            @DisplayName("상태코드 400 Bad Request 를 응답한다.")
+            void it_responds_status_code_400() throws Exception {
+                mockMvc.perform(patch("/api/users/me")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
+                        .content(objectMapper.writeValueAsString(invalidUserUpdateData)))
+                        .andExpect(status().isBadRequest());
+            }
+        }
+
+        @Nested
+        @DisplayName("알수 없는 사용자가 요청한다면")
+        class Context_with_anonymous_user {
+            @Test
+            @DisplayName("상태코드 401 Unauthorized 를 응답한다.")
+            void it_responds_status_code_401() throws Exception {
+                mockMvc.perform(patch("/api/users/me")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userUpdateData)))
+                        .andExpect(status().isUnauthorized());
             }
         }
     }

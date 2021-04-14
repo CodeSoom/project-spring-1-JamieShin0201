@@ -17,8 +17,10 @@ class UserTest {
     private final String validPassword = "test1234";
     private final String invalidPassword = validPassword + "INVALID";
     private final String newPassword = "newPassword";
+    private final String newName = "newName";
 
     private User user;
+    private User updatingUser;
     private User deletedUser;
 
     @BeforeEach
@@ -28,10 +30,30 @@ class UserTest {
         user = User.builder().build();
         user.changePassword(validPassword, passwordEncoder);
 
+        updatingUser = User.builder()
+                .name(newName)
+                .build();
+
         deletedUser = User.builder()
                 .deleted(true)
                 .build();
         deletedUser.changePassword(validPassword, passwordEncoder);
+    }
+
+    @Nested
+    @DisplayName("changeWith")
+    class Describe_changeWith {
+        @Nested
+        @DisplayName("변경할 회원 정보가 주어진다면")
+        class Context_with_updating_user {
+            @Test
+            @DisplayName("회원을 변경한다.")
+            void it_change_user() {
+                user.changeWith(updatingUser);
+
+                assertThat(user.getName()).isEqualTo(newName);
+            }
+        }
     }
 
     @Nested

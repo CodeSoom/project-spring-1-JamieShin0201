@@ -14,6 +14,7 @@ import ProductPage from './pages/productPage/ProductPage';
 import ProductCreatePage from './pages/productCreatePage/ProductCreatePage';
 
 import styles from './App.module.css';
+import UserPage from './pages/userPage/UserPage';
 
 function App({ FileInput }) {
   return (
@@ -34,6 +35,10 @@ function App({ FileInput }) {
         <Route exact path="/signUp">
           <Header color="dark" />
           <SignUpPage />
+        </Route>
+        <Route exact path="/me">
+          <Header color="dark" />
+          <UserPage />
         </Route>
         <Route exact path="/products">
           <Header color="dark" />

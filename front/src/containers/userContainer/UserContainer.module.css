@@ -1,0 +1,51 @@
+.editForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+}
+
+.email,
+.name,
+.password,
+.editBtn,
+.backBtn,
+.deleteBtn {
+  font-size: 1.2em;
+  padding: 0.6em;
+  margin: 0.5em;
+  width: 600px;
+}
+
+.email,
+.password {
+  background-color: lightgray;
+  border: 1px solid black;
+}
+
+.editBtn,
+.backBtn,
+.deleteBtn {
+  outline: 0;
+  cursor: pointer;
+}
+
+.editBtn {
+  background-color: black;
+  opacity: 0.8;
+  color: white;
+}
+
+.backBtn {
+  background-color: white;
+}
+
+.deleteBtn {
+  color: black;
+}
+
+.editBtn:hover,
+.backBtn:hover,
+.deleteBtn:hover {
+  opacity: 0.5;
+}

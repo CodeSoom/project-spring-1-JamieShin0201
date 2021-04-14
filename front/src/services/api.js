@@ -52,3 +52,16 @@ export async function postLogin({ email, password }) {
   return accessToken;
 }
 
+export async function fetchUser(accessToken) {
+  const url = 'http://localhost:8080/api/users/me';
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const data = await response.json();
+  return data;
+}

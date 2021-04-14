@@ -14,13 +14,13 @@ export default function LoginFormContainer() {
     history.push('signUp');
   }
 
-  function onLogin() {
+  async function onLogin() {
     const LoginForm = {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
 
-    const accessToken = postLogin(LoginForm);
+    const accessToken = await postLogin(LoginForm);
     saveItem('accessToken', accessToken);
 
     history.push('/');

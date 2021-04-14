@@ -5,7 +5,6 @@ import com.solebysole.authentication.utils.JwtUtil;
 import com.solebysole.common.errors.InvalidTokenException;
 import com.solebysole.common.errors.LoginFailException;
 import com.solebysole.common.errors.UserNotFoundException;
-import com.solebysole.user.domain.Role;
 import com.solebysole.user.domain.User;
 import com.solebysole.user.domain.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -67,16 +66,15 @@ public class AuthenticationService {
     }
 
     /**
-     * 주어진 회원 id에 해당하는 권한을 리턴합니다.
+     * 주어진 회원 id에 해당하는 회원을 리턴합니다.
      *
      * @param userId 회원 식별자
-     * @return 권한
+     * @return 회원
      */
     @Transactional(readOnly = true)
-    public Role getUserRoleById(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException(userId));
-        return user.getRole();
+    public User loadUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
 }

@@ -150,8 +150,8 @@ class AuthenticationServiceTest {
     }
 
     @Nested
-    @DisplayName("getUserRole")
-    class Describe_getUserRole {
+    @DisplayName("loadUserById")
+    class Describe_loadUserById {
         @Nested
         @DisplayName("주어진 id에 해당하는 회원이 존재한다면")
         class Context_with_a_existing_id {
@@ -181,7 +181,7 @@ class AuthenticationServiceTest {
             @Test
             void it_throws_user_not_found_exception() {
                 assertThrows(UserNotFoundException.class,
-                        () -> authenticationService.getUserRoleById(notExistingId));
+                        () -> authenticationService.loadUserById(notExistingId));
             }
         }
     }

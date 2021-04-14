@@ -1,6 +1,7 @@
 package com.solebysole.authentication;
 
 import com.solebysole.user.domain.Role;
+import com.solebysole.user.domain.User;
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,11 +17,11 @@ import java.util.stream.Collectors;
 @Getter
 public class UserAuthentication extends AbstractAuthenticationToken {
 
-    private final Long userId;
+    private final User user;
 
-    public UserAuthentication(Long userId, Role... roles) {
+    public UserAuthentication(User user, Role... roles) {
         super(authorities(roles));
-        this.userId = userId;
+        this.user = user;
     }
 
     @Override
@@ -30,17 +31,12 @@ public class UserAuthentication extends AbstractAuthenticationToken {
 
     @Override
     public Object getPrincipal() {
-        return userId;
+        return user;
     }
 
     @Override
     public boolean isAuthenticated() {
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Authentication(" + userId + ")";
     }
 
     private static List<GrantedAuthority> authorities(Role... roles) {

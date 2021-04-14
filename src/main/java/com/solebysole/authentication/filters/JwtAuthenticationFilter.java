@@ -2,7 +2,7 @@ package com.solebysole.authentication.filters;
 
 import com.solebysole.authentication.UserAuthentication;
 import com.solebysole.authentication.service.AuthenticationService;
-import com.solebysole.user.domain.Role;
+import com.solebysole.user.domain.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -39,9 +39,9 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         if (authorization != null) {
             String accessToken = authorization.substring("Bearer ".length());
             Long userId = authenticationService.parseToken(accessToken);
-            Role role = authenticationService.getUserRoleById(userId);
-            Authentication authentication = new UserAuthentication(userId, role);
+            User user = authenticationService.loadUserById(userId);
 
+            Authentication authentication = new UserAuthentication(user, user.getRole());
             SecurityContext context = SecurityContextHolder.getContext();
             context.setAuthentication(authentication);
         }

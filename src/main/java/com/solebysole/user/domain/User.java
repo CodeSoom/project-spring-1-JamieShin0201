@@ -42,8 +42,8 @@ public class User {
     private boolean deleted;
 
     @Builder
-    private User(Long id, String name, String email, String password,
-                 AuthProvider provider, String providerId, Role role, boolean deleted) {
+    protected User(Long id, String name, String email, String password,
+                   AuthProvider provider, String providerId, Role role, boolean deleted) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -74,6 +74,10 @@ public class User {
     public boolean authenticate(String password,
                                 PasswordEncoder passwordEncoder) {
         return !deleted && passwordEncoder.matches(password, this.password);
+    }
+
+    public User getUser() {
+        return this;
     }
 
 }

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,6 +70,18 @@ public class UserController {
             @RequestBody @Valid UserUpdateData userUpdateData) {
         userService.updateUser(user, userUpdateData);
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 현재 회원를 삭제합니다.
+     *
+     * @param user 현재 회원
+     * @return 응답 정보
+     */
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteCurrentUser(@CurrentUser User user) {
+        userService.deleteUser(user);
+        return ResponseEntity.noContent().build();
     }
 
 }

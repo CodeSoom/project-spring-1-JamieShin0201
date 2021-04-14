@@ -75,6 +75,13 @@ public class User {
     }
 
     /**
+     * 회원이 삭제되었다는 표시를 합니다.
+     */
+    public void delete() {
+        this.deleted = true;
+    }
+
+    /**
      * 주어진 비밀번호와 현재 비밀번호가 일치하고, 회원이 삭제되지 않았다면 true 를 리턴합니다.
      *
      * @param password 비밀번호

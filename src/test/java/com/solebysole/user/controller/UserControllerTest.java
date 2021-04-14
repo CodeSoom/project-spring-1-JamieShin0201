@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -167,7 +168,7 @@ class UserControllerTest {
         }
 
         @Nested
-        @DisplayName("알수 없는 사용자가 요청한다면")
+        @DisplayName("알수 없는 사용자가 주어진다면")
         class Context_with_anonymous_user {
             @Test
             @DisplayName("상태코드 401 Unauthorized 를 응답한다.")
@@ -211,7 +212,7 @@ class UserControllerTest {
         }
 
         @Nested
-        @DisplayName("알수 없는 사용자가 요청한다면")
+        @DisplayName("알수 없는 사용자가 주어진다면")
         class Context_with_anonymous_user {
             @Test
             @DisplayName("상태코드 401 Unauthorized 를 응답한다.")
@@ -219,6 +220,35 @@ class UserControllerTest {
                 mockMvc.perform(patch("/api/users/me")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userUpdateData)))
+                        .andExpect(status().isUnauthorized());
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("DELETE /me 요청은")
+    class Describe_DELETE {
+        @Nested
+        @DisplayName("올바른 회원이 주어진다면")
+        class Context_with_valid_user {
+            @Test
+            @DisplayName("상태코드 204 No Content 를 응답한다.")
+            void it_responds_status_code_204() throws Exception {
+                mockMvc.perform(delete("/api/users/me")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + VALID_TOKEN))
+                        .andExpect(status().isNoContent());
+            }
+        }
+
+        @Nested
+        @DisplayName("알수 없는 사용자가 주어진다면")
+        class Context_with_anonymous_user {
+            @Test
+            @DisplayName("상태코드 401 Unauthorized 를 응답한다.")
+            void it_responds_status_code_401() throws Exception {
+                mockMvc.perform(delete("/api/users/me")
+                        .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isUnauthorized());
             }
         }

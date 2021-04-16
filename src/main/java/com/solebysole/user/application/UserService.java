@@ -65,6 +65,7 @@ public class UserService {
     @Transactional
     public void deleteUser(User user) {
         user.delete();
+        userRepository.save(user);
     }
 
 }

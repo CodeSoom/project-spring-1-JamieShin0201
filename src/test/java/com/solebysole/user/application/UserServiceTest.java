@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -114,6 +115,22 @@ class UserServiceTest {
                 userService.updateUser(user, userUpdateData);
 
                 verify(userRepository).save(any(User.class));
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("deleteUser")
+    class Describe_deleteUser {
+        @Nested
+        @DisplayName("회원이 주어진다면")
+        class Context_with_user {
+            @Test
+            @DisplayName("회원을 삭제합니다.")
+            void it_delete_user() {
+                userService.deleteUser(user);
+
+                assertThat(user.isDeleted()).isTrue();
             }
         }
     }

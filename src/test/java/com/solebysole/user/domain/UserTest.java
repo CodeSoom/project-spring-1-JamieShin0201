@@ -74,6 +74,18 @@ class UserTest {
     }
 
     @Nested
+    @DisplayName("delete")
+    class Describe_delete {
+        @Test
+        @DisplayName("삭제되었다고 표시합니다.")
+        void it_mark_as_deleted() {
+            user.delete();
+
+            assertThat(user.isDeleted()).isTrue();
+        }
+    }
+
+    @Nested
     @DisplayName("authenticate")
     class Describe_authenticate {
         @Nested

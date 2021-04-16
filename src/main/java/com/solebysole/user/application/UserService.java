@@ -57,4 +57,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * 주어진 회원을 삭제합니다.
+     *
+     * @param user 회원
+     */
+    @Transactional
+    public void deleteUser(User user) {
+        user.delete();
+    }
+
 }

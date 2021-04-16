@@ -73,7 +73,7 @@ public class UserController {
     }
 
     /**
-     * 현재 회원를 삭제합니다.
+     * 현재 회원을 삭제합니다.
      *
      * @param user 현재 회원
      * @return 응답 정보

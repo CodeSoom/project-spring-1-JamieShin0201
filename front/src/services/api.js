@@ -65,3 +65,17 @@ export async function fetchUser(accessToken) {
   const data = await response.json();
   return data;
 }
+
+export async function editUser({ accessToken, name }) {
+  const url = 'http://localhost:8080/api/users/me';
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({ name }),
+  });
+
+  return response;
+}

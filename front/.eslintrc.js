@@ -54,5 +54,6 @@ module.exports = {
     'linebreak-style': 'off',
     'no-proto': 'off',
     'import/no-unresolved': 'off',
+    'no-alert': 'off',
   },
 };

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 
 import styles from './UserContainer.module.css';
 
-import { fetchUser } from '../../services/api';
+import { fetchUser, editUser } from '../../services/api';
 
 export default function UserContainer({ accessToken }) {
   const [user, setUser] = useState({});
@@ -23,7 +23,17 @@ export default function UserContainer({ accessToken }) {
   }, []);
 
   function onEdit() {
-    // Todo
+    const editForm = {
+      accessToken,
+      name: nameRef.current.value,
+    };
+
+    const result = window.confirm('변경 사항을 적용하시겠습니까?');
+    if (!result) {
+      return;
+    }
+
+    editUser(editForm);
   }
 
   function onBack() {

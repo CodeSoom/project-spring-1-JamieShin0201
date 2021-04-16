@@ -79,3 +79,16 @@ export async function editUser({ accessToken, name }) {
 
   return response;
 }
+
+export async function deleteUser(accessToken) {
+  const url = `http://localhost:8080/api/users/me`;
+  const response = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return response;
+}

@@ -4,7 +4,8 @@ import { useHistory } from 'react-router';
 
 import styles from './UserContainer.module.css';
 
-import { fetchUser, editUser } from '../../services/api';
+import { fetchUser, editUser, deleteUser } from '../../services/api';
+import { removeItem } from '../../services/storage';
 
 export default function UserContainer({ accessToken }) {
   const [user, setUser] = useState({});
@@ -41,7 +42,14 @@ export default function UserContainer({ accessToken }) {
   }
 
   function onDelete() {
-    // Todo
+    const result = window.confirm('정말로 삭제하시겠습니까?');
+    if (!result) {
+      return;
+    }
+
+    deleteUser(accessToken);
+    removeItem('accessToken');
+    history.push('/');
   }
 
   function onChange(event) {

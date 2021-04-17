@@ -131,6 +131,8 @@ class UserServiceTest {
                 userService.deleteUser(user);
 
                 assertThat(user.isDeleted()).isTrue();
+
+                verify(userRepository).save(any(User.class));
             }
         }
     }

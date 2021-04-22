@@ -1,6 +1,7 @@
 package com.solebysole.common.advice;
 
 import com.solebysole.common.dto.ErrorResponse;
+import com.solebysole.common.errors.CartProductNotFoundException;
 import com.solebysole.common.errors.LoginFailException;
 import com.solebysole.common.errors.ProductNameDuplicationException;
 import com.solebysole.common.errors.ProductNotFoundException;
@@ -36,6 +37,12 @@ public class ControllerErrorAdvice {
 
     @ExceptionHandler(LoginFailException.class)
     public ResponseEntity<ErrorResponse> handleLoginFailException(LoginFailException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CartProductNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleCartProductNotFoundException(CartProductNotFoundException e) {
         ErrorResponse errorResponse = new ErrorResponse(e);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

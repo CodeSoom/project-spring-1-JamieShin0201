@@ -4,6 +4,7 @@ import com.solebysole.cart.domain.CartProduct;
 import com.solebysole.cart.domain.CartProductRepository;
 import com.solebysole.cart.dto.CartProductCreateData;
 import com.solebysole.cart.dto.CartProductData;
+import com.solebysole.common.errors.CartProductNotFoundException;
 import com.solebysole.common.errors.ProductNotFoundException;
 import com.solebysole.product.domain.Product;
 import com.solebysole.product.domain.ProductRepository;
@@ -64,6 +65,20 @@ public class CartProductService {
         cartProductRepository.save(cartProduct);
 
         return cartProduct.getId();
+    }
+
+    /**
+     * 주어진 id에 해당하는 장바구니 상품을 삭제합니다.
+     *
+     * @param id 장바구니 상품 식별자
+     * @throws CartProductNotFoundException 장바구니 상품이 존재하지 않을 경우
+     */
+    @Transactional
+    public void deleteCartProduct(Long id) throws CartProductNotFoundException {
+        CartProduct cartProduct = cartProductRepository.findById(id)
+                .orElseThrow(() -> new CartProductNotFoundException(id));
+
+        cartProductRepository.delete(cartProduct);
     }
 
 }

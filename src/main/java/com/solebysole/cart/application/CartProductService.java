@@ -3,6 +3,7 @@ package com.solebysole.cart.application;
 import com.solebysole.cart.domain.CartProduct;
 import com.solebysole.cart.domain.CartProductRepository;
 import com.solebysole.cart.dto.CartProductCreateData;
+import com.solebysole.cart.dto.CartProductData;
 import com.solebysole.common.errors.ProductNotFoundException;
 import com.solebysole.product.domain.Product;
 import com.solebysole.product.domain.ProductRepository;
@@ -10,6 +11,10 @@ import com.solebysole.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 장바구니 상품과 관련된 비즈니스 로직을 담당합니다.
@@ -22,6 +27,19 @@ public class CartProductService {
     private final CartProductRepository cartProductRepository;
 
     private final ProductRepository productRepository;
+
+    /**
+     * 모든 장바구니 상품을 리턴합니다.
+     */
+    public List<CartProductData> getCartProducts(User user) {
+        List<CartProduct> cartProducts = cartProductRepository.findAllByUserId(user.getId());
+
+        return Collections.unmodifiableList(
+                cartProducts.stream()
+                        .map(CartProductData::of)
+                        .collect(Collectors.toList())
+        );
+    }
 
     /**
      * 주어진 장바구니 상품 정보로 장바구니 상품을 생성하고, 만들어진 식별자를 리턴합니다.

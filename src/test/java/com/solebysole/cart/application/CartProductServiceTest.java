@@ -5,6 +5,7 @@ import com.solebysole.cart.domain.CartProductRepository;
 import com.solebysole.cart.dto.CartProductCreateData;
 import com.solebysole.common.errors.ProductNotFoundException;
 import com.solebysole.product.domain.Category;
+import com.solebysole.product.domain.Image;
 import com.solebysole.product.domain.Product;
 import com.solebysole.product.domain.ProductRepository;
 import com.solebysole.user.domain.Role;
@@ -14,8 +15,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -33,9 +36,17 @@ class CartProductServiceTest {
     private final Long existingProductId = 1L;
     private final Long notExistingProductId = 1000L;
 
-    private CartProductCreateData cartProductCreateData;
-    private Product product;
     private User user;
+
+    private CartProductCreateData cartProductCreateData;
+
+    private Product product1;
+    private Product product2;
+
+    private List<CartProduct> cartProducts;
+    private CartProduct cartProduct1;
+    private CartProduct cartProduct2;
+
 
     @BeforeEach
     void setup() {
@@ -46,13 +57,8 @@ class CartProductServiceTest {
                 .count(3)
                 .build();
 
-        product = Product.builder()
-                .name("가죽 지갑")
-                .originalPrice(50000)
-                .discountedPrice(40000)
-                .description("가죽 지갑입니다.")
-                .category(Category.WALLET)
-                .build();
+        product1 = createProduct("가죽지갑1");
+        product2 = createProduct("가죽지갑2");
 
         user = User.builder()
                 .id(1L)
@@ -60,6 +66,54 @@ class CartProductServiceTest {
                 .password("1234abcd")
                 .role(Role.ROLE_USER)
                 .build();
+
+        cartProduct1 = CartProduct.builder()
+                .product(product1)
+                .count(1)
+                .build();
+
+        cartProduct2 = CartProduct.builder()
+                .product(product2)
+                .count(1)
+                .build();
+    }
+
+    @Nested
+    @DisplayName("getCartProducts")
+    class Describe_getCartProducts {
+        @Nested
+        @DisplayName("저장된 장바구니 상품이 여러개 있다면")
+        class Context_with_cart_products {
+            @BeforeEach
+            void setUp() {
+                cartProducts = List.of(cartProduct1, cartProduct2);
+
+                given(cartproductRepository.findAllByUserId(user.getId()))
+                        .willReturn(cartProducts);
+            }
+
+            @Test
+            @DisplayName("모든 장바구니 상품 목록을 리턴한다.")
+            void it_returns_all_cart_product_list() {
+                assertThat(cartProductService.getCartProducts(user)).hasSize(2);
+            }
+        }
+
+        @Nested
+        @DisplayName("저장된 상품이 없다면")
+        class Context_without_cart_products {
+            @BeforeEach
+            void setUp() {
+                given(cartproductRepository.findAllByUserId(user.getId()))
+                        .willReturn(List.of());
+            }
+
+            @Test
+            @DisplayName("비어있는 상품 목록을 리턴한다.")
+            void it_returns_empty_cart_product_list() {
+                assertThat(cartProductService.getCartProducts(user)).hasSize(0);
+            }
+        }
     }
 
     @Nested
@@ -71,7 +125,7 @@ class CartProductServiceTest {
             @BeforeEach
             void setUp() {
                 given(productRepository.findById(existingProductId))
-                        .willReturn(Optional.of(product));
+                        .willReturn(Optional.of(product1));
 
                 given(cartproductRepository.save(any(CartProduct.class)))
                         .will(invocation -> invocation.<CartProduct>getArgument(0));
@@ -102,6 +156,20 @@ class CartProductServiceTest {
                         () -> cartProductService.crateCartProduct(user, cartProductCreateData));
             }
         }
+    }
+
+    private Product createProduct(String name) {
+        Product product = Product.builder()
+                .name(name)
+                .originalPrice(50000)
+                .discountedPrice(40000)
+                .description("가죽 지갑입니다.")
+                .category(Category.WALLET)
+                .build();
+
+        product.addImage(new Image("url1"));
+
+        return product;
     }
 
 }

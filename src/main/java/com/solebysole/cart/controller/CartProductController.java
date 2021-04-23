@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,6 +56,21 @@ public class CartProductController {
     ) {
         cartProductService.crateCartProduct(user, cartProductCreateData);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     * 주어진 id에 해당하는 장바구니 상품을 삭제합니다.
+     *
+     * @param user 현재 회원
+     * @param id 장바구니 상품 식별자
+     * @return 응답 정보
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(
+            @CurrentUser User user,
+            @PathVariable Long id) {
+        cartProductService.deleteCartProduct(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

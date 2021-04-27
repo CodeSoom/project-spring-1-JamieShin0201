@@ -358,10 +358,6 @@ include::{path}/request-fields.adoc[]
 
 include::{path}/http-response.adoc[]
 
-====== Response Headers
-
-include::{path}/response-headers.adoc[]
-
 ==== Request Sample
 
 ====== Curl
@@ -437,6 +433,48 @@ include::{path}/path-parameters.adoc[]
 성공할 경우 response 형식은 다음과 같습니다.
 
 include::{path}/http-response.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+== Order API
+
+=== POST /api/order
+
+:path: {snippets}/create-order
+
+상품을 주문합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+====== Request Headers
+
+include::{path}/request-headers.adoc[]
+
+====== Request Fields
+
+include::{path}/request-fields.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
+
+====== Response Headers
+
+include::{path}/response-headers.adoc[]
 
 ==== Request Sample
 

@@ -58,6 +58,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 
     // Spring REST Docs
+    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
     // Lombok
@@ -78,6 +79,13 @@ test {
 asciidoctor {
     inputs.dir snippetsDir
     dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}/html5") {
+        into 'static/docs'
+    }
 }
 
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'

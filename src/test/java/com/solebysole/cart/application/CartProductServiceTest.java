@@ -168,8 +168,8 @@ class CartProductServiceTest {
     }
 
     @Nested
-    @DisplayName("updateCartProductCount")
-    class Describe_updateCartProductCount {
+    @DisplayName("updateCartProduct")
+    class Describe_updateCartProduct {
         @Nested
         @DisplayName("존재하는 장바구니 상품 id가 주어진다면")
         class Context_with_existing_cart_product_id {
@@ -184,7 +184,7 @@ class CartProductServiceTest {
             void it_update_cart_product_count() {
                 cartProductService.updateCartProduct(existingProductId, cartProductUpdateData);
 
-                verify(cartproductRepository).save(any(CartProduct.class));
+                assertThat(cartProduct1.getCount()).isEqualTo(cartProductUpdateData.getCount());
             }
         }
 

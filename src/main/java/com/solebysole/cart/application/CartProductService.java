@@ -81,7 +81,6 @@ public class CartProductService {
         CartProduct cartProduct = findCartProduct(id);
 
         cartProduct.changeCount(cartProductUpdateData.getCount());
-        cartProductRepository.save(cartProduct);
     }
 
     /**

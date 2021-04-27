@@ -12,6 +12,8 @@ import com.solebysole.product.domain.Option;
 import com.solebysole.product.dto.ProductCreateData;
 import com.solebysole.product.dto.ProductData;
 import com.solebysole.product.dto.ProductDetailData;
+import com.solebysole.user.domain.Role;
+import com.solebysole.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -53,9 +55,14 @@ class ProductControllerTest {
     @MockBean
     private AuthenticationService authenticationService;
 
+    private static final String VALID_TOKEN = "eyJhbGciOiJIUzI1NiJ9." +
+            "eyJ1c2VySWQiOjF9.ZZ3CUl0jxeLGvQ1Js5nG2Ty5qGTlqai5ubDMXZOdaDk";
+
     private final Long savedId = 1L;
     private final Long existingId = 1L;
     private final Long notExistingId = 9999L;
+
+    private final Long existingUserId = 1L;
 
     private List<ProductData> productDataList;
     private ProductData productData1;
@@ -67,6 +74,9 @@ class ProductControllerTest {
 
     private ProductDetailData productDetailData;
 
+    private User user;
+    private User adminUser;
+
     @BeforeEach
     void setUp() {
         productData1 = createProductData(1L, "지갑1");
@@ -77,6 +87,25 @@ class ProductControllerTest {
         duplicatedProductCreateData = createProductCreateData("만두 지갑");
 
         productDetailData = createProductDetailData("만두 지갑");
+
+        user = User.builder()
+                .id(existingUserId)
+                .email("test@test.com")
+                .password("1234abcd")
+                .role(Role.ROLE_USER)
+                .build();
+
+        adminUser = User.builder()
+                .id(existingUserId)
+                .email("test@test.com")
+                .password("1234abcd")
+                .role(Role.ROLE_ADMIN)
+                .build();
+
+        given(authenticationService.parseToken(VALID_TOKEN))
+                .willReturn(existingUserId);
+        given(authenticationService.loadUserById(existingUserId))
+                .willReturn(adminUser);
     }
 
     @Nested
@@ -186,9 +215,10 @@ class ProductControllerTest {
             void it_responds_status_code_201() throws Exception {
                 mockMvc.perform(post("/api/products")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
                         .content(objectMapper.writeValueAsString(productCreateData)))
                         .andExpect(header().string("location", "/api/products/" + savedId))
-                        .andExpect(status().isCreated());
+                        .andExpect(status().isCreated())
             }
         }
 
@@ -200,6 +230,7 @@ class ProductControllerTest {
             void it_responds_status_code_400() throws Exception {
                 mockMvc.perform(post("/api/products")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
                         .content(objectMapper.writeValueAsString(invalidProductCreateData)))
                         .andExpect(status().isBadRequest());
             }
@@ -219,8 +250,29 @@ class ProductControllerTest {
             void it_responds_status_code_400() throws Exception {
                 mockMvc.perform(post("/api/products")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
                         .content(objectMapper.writeValueAsString(duplicatedProductCreateData)))
                         .andExpect(status().isBadRequest());
+            }
+        }
+
+        @Nested
+        @DisplayName("관리자가 아니라면")
+        class Context_with_not_admin_user {
+            @BeforeEach
+            void setUp() {
+                given(authenticationService.loadUserById(existingUserId))
+                        .willReturn(user);
+            }
+
+            @Test
+            @DisplayName("상태코드 403 Forbidden 를 응답한다.")
+            void it_responds_status_code_401() throws Exception {
+                mockMvc.perform(post("/api/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
+                        .content(objectMapper.writeValueAsString(productCreateData)))
+                        .andExpect(status().isForbidden());
             }
         }
     }

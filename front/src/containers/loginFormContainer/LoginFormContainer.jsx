@@ -21,6 +21,11 @@ export default function LoginFormContainer() {
     };
 
     const accessToken = await postLogin(LoginForm);
+    if (!accessToken) {
+      alert('로그인에 실패하였습니다.');
+      return;
+    }
+
     saveItem('accessToken', accessToken);
 
     history.push('/');

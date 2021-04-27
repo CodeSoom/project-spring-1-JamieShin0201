@@ -37,6 +37,11 @@ public class Keyword {
         this.name = name;
     }
 
+    public Keyword(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public void setProduct(Product product) {
         this.product = product;
     }

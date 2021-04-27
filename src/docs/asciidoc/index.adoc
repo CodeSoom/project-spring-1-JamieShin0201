@@ -1,0 +1,115 @@
+= SOLE BY SOLE
+:doctype: book
+:toc: left
+:sectnums:
+:toclevels: 3
+
+== Product API
+
+=== GET /products
+
+:path: {snippets}/get-products
+
+상품 목록을 조회합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
+
+====== Response Fields
+
+include::{path}/response-fields.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+=== GET /products/{id}
+
+:path: {snippets}/get-product
+
+특정 상품을 조회합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+====== Request Parameters
+
+include::{path}/path-parameters.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
+
+====== Response Fields
+
+include::{path}/response-fields.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+=== POST /products
+
+:path: {snippets}/create-product
+
+상품을 생성합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+====== Request Header
+
+include::{path}/request-headers.adoc[]
+
+====== Request Fields
+
+include::{path}/request-fields.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
+
+====== Response Fields
+
+include::{path}/response-fields.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]

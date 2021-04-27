@@ -39,6 +39,11 @@ public class Image {
         this.url = url;
     }
 
+    public Image(Long id, String url) {
+        this.id = id;
+        this.url = url;
+    }
+
     public void setProduct(Product product) {
         this.product = product;
     }

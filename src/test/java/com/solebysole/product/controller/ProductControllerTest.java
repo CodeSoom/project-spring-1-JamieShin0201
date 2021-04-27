@@ -2,8 +2,10 @@ package com.solebysole.product.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solebysole.authentication.service.AuthenticationService;
+import com.solebysole.common.RestDocsConfiguration;
 import com.solebysole.common.errors.ProductNameDuplicationException;
 import com.solebysole.common.errors.ProductNotFoundException;
+import com.solebysole.docs.ProductDocumentation;
 import com.solebysole.product.application.ProductService;
 import com.solebysole.product.domain.Category;
 import com.solebysole.product.domain.Image;
@@ -19,12 +21,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -40,6 +43,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("ProductController 클래스")
+@Import(RestDocsConfiguration.class)
+@AutoConfigureRestDocs
 @WebMvcTest(ProductController.class)
 class ProductControllerTest {
 
@@ -86,7 +91,7 @@ class ProductControllerTest {
         invalidProductCreateData = createProductCreateData("");
         duplicatedProductCreateData = createProductCreateData("만두 지갑");
 
-        productDetailData = createProductDetailData("만두 지갑");
+        productDetailData = createProductDetailData(1L, "만두 지갑");
 
         user = User.builder()
                 .id(existingUserId)
@@ -128,7 +133,8 @@ class ProductControllerTest {
                 mockMvc.perform(get("/api/products")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(jsonPath("$", hasSize(2)))
-                        .andExpect(status().isOk());
+                        .andExpect(status().isOk())
+                        .andDo(ProductDocumentation.getProducts());
             }
         }
 
@@ -175,7 +181,8 @@ class ProductControllerTest {
                         .andExpect(jsonPath("keywords").exists())
                         .andExpect(jsonPath("images").exists())
                         .andExpect(jsonPath("options").exists())
-                        .andExpect(status().isOk());
+                        .andExpect(status().isOk())
+                        .andDo(ProductDocumentation.getProduct());
             }
         }
 
@@ -219,6 +226,7 @@ class ProductControllerTest {
                         .content(objectMapper.writeValueAsString(productCreateData)))
                         .andExpect(header().string("location", "/api/products/" + savedId))
                         .andExpect(status().isCreated())
+                        .andDo(ProductDocumentation.createProduct());
             }
         }
 
@@ -280,6 +288,7 @@ class ProductControllerTest {
     private ProductCreateData createProductCreateData(String name) {
         Set<Keyword> keywords = createKeywords();
         List<Image> images = createImages();
+        List<Option> options = createOptions();
 
         ProductCreateData productCreateData = ProductCreateData.builder()
                 .name(name)
@@ -289,7 +298,7 @@ class ProductControllerTest {
                 .category(Category.WALLET)
                 .keywords(keywords)
                 .images(images)
-                .options(new ArrayList<>())
+                .options(options)
                 .build();
 
         return productCreateData;
@@ -307,13 +316,14 @@ class ProductControllerTest {
         return productData;
     }
 
-    private ProductDetailData createProductDetailData(String name) {
+    private ProductDetailData createProductDetailData(Long id, String name) {
         Set<Keyword> keywords = createKeywords();
         List<Image> images = createImages();
 
         List<Option> options = createOptions();
 
         productDetailData = ProductDetailData.builder()
+                .id(id)
                 .name(name)
                 .originalPrice(50000)
                 .discountedPrice(40000)
@@ -329,24 +339,24 @@ class ProductControllerTest {
 
     private HashSet<Keyword> createKeywords() {
         return new HashSet<>(
-                Arrays.asList(new Keyword("가죽"), new Keyword("지갑")));
+                Arrays.asList(new Keyword(1L, "가죽"), new Keyword(2L, "지갑")));
     }
 
     private List<Image> createImages() {
         return Arrays.asList(
-                new Image("url1"),
-                new Image("url2"));
+                new Image(1L, "url1"),
+                new Image(2L, "url2"));
     }
 
     private List<Option> createOptions() {
         return Arrays.asList(
-                new Option("색상",
-                        new Option("빨강", 1000),
-                        new Option("노랑", 2000)
+                new Option(1L, "색상",
+                        new Option(2L, "빨강", 1000),
+                        new Option(3L, "노랑", 2000)
                 ),
-                new Option("추가 옵션",
-                        new Option("끈", 3000),
-                        new Option("줄", 4000)
+                new Option(4L, "추가 옵션",
+                        new Option(5L, "끈", 3000),
+                        new Option(6L, "줄", 4000)
                 )
         );
     }

@@ -58,6 +58,18 @@ public class Option {
         this.children = Arrays.asList(children);
     }
 
+    public Option(Long id, String name, int additionalPrice) {
+        this.id = id;
+        this.name = name;
+        this.additionalPrice = additionalPrice;
+    }
+
+    public Option(Long id, String name, Option... children) {
+        this.id = id;
+        this.name = name;
+        this.children = Arrays.asList(children);
+    }
+
     public void setParent(Option parent) {
         this.parent = parent;
     }

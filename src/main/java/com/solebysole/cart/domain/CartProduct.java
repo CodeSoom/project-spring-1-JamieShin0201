@@ -46,4 +46,13 @@ public class CartProduct {
         this.count = count;
     }
 
+    /**
+     * 주어진 개수로 장바구니 상품의 개수를 갱신합니다.
+     *
+     * @param count 개수
+     */
+    public void changeCount(int count) {
+        this.count = count;
+    }
+
 }

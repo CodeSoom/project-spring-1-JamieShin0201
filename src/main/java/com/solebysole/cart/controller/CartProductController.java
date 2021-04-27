@@ -4,6 +4,7 @@ import com.solebysole.authentication.CurrentUser;
 import com.solebysole.cart.application.CartProductService;
 import com.solebysole.cart.dto.CartProductCreateData;
 import com.solebysole.cart.dto.CartProductData;
+import com.solebysole.cart.dto.CartProductUpdateData;
 import com.solebysole.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +43,6 @@ public class CartProductController {
         return ResponseEntity.ok(cartProductService.getCartProducts(user));
     }
 
-
     /**
      * 주어진 장바구니 상품 정보로 장바구니 상품을 생성합니다.
      *
@@ -56,6 +57,15 @@ public class CartProductController {
     ) {
         cartProductService.crateCartProduct(user, cartProductCreateData);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> update(
+            @CurrentUser User user,
+            @PathVariable Long id,
+            @RequestBody @Valid CartProductUpdateData cartProductUpdateData) {
+        cartProductService.updateCartProduct(id, cartProductUpdateData);
+        return ResponseEntity.ok().build();
     }
 
     /**

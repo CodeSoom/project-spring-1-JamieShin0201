@@ -3,6 +3,7 @@ package com.solebysole.cart.application;
 import com.solebysole.cart.domain.CartProduct;
 import com.solebysole.cart.domain.CartProductRepository;
 import com.solebysole.cart.dto.CartProductCreateData;
+import com.solebysole.cart.dto.CartProductUpdateData;
 import com.solebysole.common.errors.CartProductNotFoundException;
 import com.solebysole.common.errors.ProductNotFoundException;
 import com.solebysole.product.domain.Category;
@@ -43,6 +44,7 @@ class CartProductServiceTest {
     private User user;
 
     private CartProductCreateData cartProductCreateData;
+    private CartProductUpdateData cartProductUpdateData;
 
     private Product product1;
     private Product product2;
@@ -58,6 +60,10 @@ class CartProductServiceTest {
         cartProductCreateData = CartProductCreateData.builder()
                 .productId(existingProductId)
                 .count(3)
+                .build();
+
+        cartProductUpdateData = CartProductUpdateData.builder()
+                .count(5)
                 .build();
 
         product1 = createProduct("가죽지갑1");
@@ -157,6 +163,45 @@ class CartProductServiceTest {
             void it_throws_exception() {
                 assertThrows(ProductNotFoundException.class,
                         () -> cartProductService.crateCartProduct(user, cartProductCreateData));
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("updateCartProductCount")
+    class Describe_updateCartProductCount {
+        @Nested
+        @DisplayName("존재하는 장바구니 상품 id가 주어진다면")
+        class Context_with_existing_cart_product_id {
+            @BeforeEach
+            void setUp() {
+                given(cartproductRepository.findById(existingCartProductId))
+                        .willReturn(Optional.of(cartProduct1));
+            }
+
+            @Test
+            @DisplayName("장바구니 상품의 개수를 변경한다.")
+            void it_update_cart_product_count() {
+                cartProductService.updateCartProduct(existingProductId, cartProductUpdateData);
+
+                verify(cartproductRepository).save(any(CartProduct.class));
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하지 않는 장바구니 상품 id가 주어진다면")
+        class Context_with_not_existing_cart_product_id {
+            @BeforeEach
+            void setUp() {
+                given(cartproductRepository.findById(notExistingCartProductId))
+                        .willReturn(Optional.empty());
+            }
+
+            @Test
+            @DisplayName("'장바구니 상품을 찾을 수 없습니다.' 라는 예외가 발생한다.")
+            void it_throws_exception() {
+                assertThrows(CartProductNotFoundException.class,
+                        () -> cartProductService.deleteCartProduct(notExistingProductId));
             }
         }
     }

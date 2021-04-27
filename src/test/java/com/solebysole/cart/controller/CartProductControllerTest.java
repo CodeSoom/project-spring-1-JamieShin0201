@@ -6,7 +6,9 @@ import com.solebysole.cart.application.CartProductService;
 import com.solebysole.cart.dto.CartProductCreateData;
 import com.solebysole.cart.dto.CartProductData;
 import com.solebysole.cart.dto.CartProductUpdateData;
+import com.solebysole.common.RestDocsConfiguration;
 import com.solebysole.common.errors.CartProductNotFoundException;
+import com.solebysole.docs.CartDocumentation;
 import com.solebysole.user.domain.Role;
 import com.solebysole.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,8 +16,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,6 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("CartProductController 클래스")
+@Import(RestDocsConfiguration.class)
+@AutoConfigureRestDocs
 @WebMvcTest(CartProductController.class)
 class CartProductControllerTest {
 
@@ -125,7 +131,8 @@ class CartProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + VALID_TOKEN))
                         .andExpect(jsonPath("$", hasSize(2)))
-                        .andExpect(status().isOk());
+                        .andExpect(status().isOk())
+                        .andDo(CartDocumentation.getCartProducts());
             }
         }
 
@@ -183,7 +190,8 @@ class CartProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + VALID_TOKEN)
                         .content(objectMapper.writeValueAsString(cartProductCreateData)))
-                        .andExpect(status().isCreated());
+                        .andExpect(status().isCreated())
+                        .andDo(CartDocumentation.createCartProduct());
             }
         }
 
@@ -228,7 +236,8 @@ class CartProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + VALID_TOKEN)
                         .content(objectMapper.writeValueAsString(cartProductUpdateData)))
-                        .andExpect(status().isOk());
+                        .andExpect(status().isOk())
+                        .andDo(CartDocumentation.updateCartProduct());
             }
         }
 
@@ -293,7 +302,8 @@ class CartProductControllerTest {
                 mockMvc.perform(delete("/api/cart/{id}", existingCartProductId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + VALID_TOKEN))
-                        .andExpect(status().isNoContent());
+                        .andExpect(status().isNoContent())
+                        .andDo(CartDocumentation.deleteCartProduct());
             }
         }
 

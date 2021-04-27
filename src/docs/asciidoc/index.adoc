@@ -4,116 +4,6 @@
 :sectnums:
 :toclevels: 2
 
-== Product API
-
-=== GET /api/products
-
-:path: {snippets}/get-products
-
-상품 목록을 조회합니다.
-
-==== Request
-
-Request 형식은 다음과 같습니다.
-
-include::{path}/http-request.adoc[]
-
-==== Response
-
-성공할 경우 response 형식은 다음과 같습니다.
-
-include::{path}/http-response.adoc[]
-
-====== Response Fields
-
-include::{path}/response-fields.adoc[]
-
-==== Request Sample
-
-====== Curl
-
-include::{path}/curl-request.adoc[]
-
-====== Httpie
-
-include::{path}/httpie-request.adoc[]
-
-=== GET /api/products/{id}
-
-:path: {snippets}/get-product
-
-특정 상품을 조회합니다.
-
-==== Request
-
-Request 형식은 다음과 같습니다.
-
-include::{path}/http-request.adoc[]
-
-====== Request Parameters
-
-include::{path}/path-parameters.adoc[]
-
-==== Response
-
-성공할 경우 response 형식은 다음과 같습니다.
-
-include::{path}/http-response.adoc[]
-
-====== Response Fields
-
-include::{path}/response-fields.adoc[]
-
-==== Request Sample
-
-====== Curl
-
-include::{path}/curl-request.adoc[]
-
-====== Httpie
-
-include::{path}/httpie-request.adoc[]
-
-=== POST /api/products
-
-:path: {snippets}/create-product
-
-상품을 생성합니다.
-
-==== Request
-
-Request 형식은 다음과 같습니다.
-
-include::{path}/http-request.adoc[]
-
-====== Request Header
-
-include::{path}/request-headers.adoc[]
-
-====== Request Fields
-
-include::{path}/request-fields.adoc[]
-
-==== Response
-
-성공할 경우 response 형식은 다음과 같습니다.
-
-include::{path}/http-response.adoc[]
-
-====== Response Headers
-
-include::{path}/response-headers.adoc[]
-
-==== Request Sample
-
-====== Curl
-
-include::{path}/curl-request.adoc[]
-
-====== Httpie
-
-include::{path}/httpie-request.adoc[]
-
 == User API
 
 === POST /api/users
@@ -283,6 +173,270 @@ include::{path}/http-response.adoc[]
 ====== Response Fields
 
 include::{path}/response-fields.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+== Product API
+
+=== GET /api/products
+
+:path: {snippets}/get-products
+
+상품 목록을 조회합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
+
+====== Response Fields
+
+include::{path}/response-fields.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+=== GET /api/products/{id}
+
+:path: {snippets}/get-product
+
+특정 상품을 조회합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+====== Request Parameters
+
+include::{path}/path-parameters.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
+
+====== Response Fields
+
+include::{path}/response-fields.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+=== POST /api/products
+
+:path: {snippets}/create-product
+
+상품을 생성합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+====== Request Header
+
+include::{path}/request-headers.adoc[]
+
+====== Request Fields
+
+include::{path}/request-fields.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
+
+====== Response Headers
+
+include::{path}/response-headers.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+== Cart API
+
+=== GET /api/cart
+
+:path: {snippets}/get-cart-products
+
+장바구니 상품 목록을 조회합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+====== Request Header
+
+include::{path}/request-headers.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
+
+====== Response Fields
+
+include::{path}/response-fields.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+=== POST /api/cart
+
+:path: {snippets}/create-cart-product
+
+장바구니 상품을 추가합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+====== Request Headers
+
+include::{path}/request-headers.adoc[]
+
+====== Request Fields
+
+include::{path}/request-fields.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
+
+====== Response Headers
+
+include::{path}/response-headers.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+=== PATCH /api/cart/{id}
+
+:path: {snippets}/update-cart-product
+
+장바구니 상품 개수를 수정합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+====== Request Header
+
+include::{path}/request-headers.adoc[]
+
+====== Request Parameters
+
+include::{path}/path-parameters.adoc[]
+
+====== Request Fields
+
+include::{path}/request-fields.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+=== DELETE /api/cart/{id}
+
+:path: {snippets}/delete-cart-product
+
+장바구니 상품을 삭제합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+====== Request Header
+
+include::{path}/request-headers.adoc[]
+
+====== Request Parameters
+
+include::{path}/path-parameters.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
 
 ==== Request Sample
 

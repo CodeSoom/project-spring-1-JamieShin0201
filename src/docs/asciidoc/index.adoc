@@ -2,11 +2,11 @@
 :doctype: book
 :toc: left
 :sectnums:
-:toclevels: 3
+:toclevels: 2
 
 == Product API
 
-=== GET /products
+=== GET /api/products
 
 :path: {snippets}/get-products
 
@@ -38,7 +38,7 @@ include::{path}/curl-request.adoc[]
 
 include::{path}/httpie-request.adoc[]
 
-=== GET /products/{id}
+=== GET /api/products/{id}
 
 :path: {snippets}/get-product
 
@@ -74,7 +74,7 @@ include::{path}/curl-request.adoc[]
 
 include::{path}/httpie-request.adoc[]
 
-=== POST /products
+=== POST /api/products
 
 :path: {snippets}/create-product
 
@@ -100,9 +100,151 @@ include::{path}/request-fields.adoc[]
 
 include::{path}/http-response.adoc[]
 
+====== Response Headers
+
+include::{path}/response-headers.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+== User API
+
+=== POST /api/users
+
+:path: {snippets}/create-user
+
+회원 가입을 합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+====== Request Fields
+
+include::{path}/request-fields.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
+
+====== Response Headers
+
+include::{path}/response-headers.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+=== GET /api/users/me
+
+:path: {snippets}/get-user
+
+내 정보를 조회합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+====== Request Header
+
+include::{path}/request-headers.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
+
 ====== Response Fields
 
 include::{path}/response-fields.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+=== PATCH /api/users/me
+
+:path: {snippets}/update-user
+
+내 정보를 수정합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+====== Request Header
+
+include::{path}/request-headers.adoc[]
+
+====== Request Fields
+
+include::{path}/request-fields.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
+
+==== Request Sample
+
+====== Curl
+
+include::{path}/curl-request.adoc[]
+
+====== Httpie
+
+include::{path}/httpie-request.adoc[]
+
+=== DELETE /api/users/me
+
+:path: {snippets}/delete-user
+
+회원 탈퇴를 합니다.
+
+==== Request
+
+Request 형식은 다음과 같습니다.
+
+include::{path}/http-request.adoc[]
+
+====== Request Header
+
+include::{path}/request-headers.adoc[]
+
+==== Response
+
+성공할 경우 response 형식은 다음과 같습니다.
+
+include::{path}/http-response.adoc[]
 
 ==== Request Sample
 

@@ -2,8 +2,10 @@ package com.solebysole.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solebysole.authentication.service.AuthenticationService;
+import com.solebysole.common.RestDocsConfiguration;
 import com.solebysole.common.errors.InvalidTokenException;
 import com.solebysole.common.errors.UserEmailDuplicationException;
+import com.solebysole.docs.UserDocumentation;
 import com.solebysole.user.application.UserService;
 import com.solebysole.user.domain.Role;
 import com.solebysole.user.domain.User;
@@ -14,8 +16,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -30,6 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("UserController 클래스")
+@Import(RestDocsConfiguration.class)
+@AutoConfigureRestDocs
 @WebMvcTest(UserController.class)
 class UserControllerTest {
 
@@ -79,7 +85,7 @@ class UserControllerTest {
                 .id(existingId)
                 .email("test@test.com")
                 .name("test")
-                .password("1234abcd")
+                .password("89ajf78@ajf8v8hg4712h6v982897vn@$6()*")
                 .role(Role.ROLE_USER)
                 .build();
 
@@ -110,7 +116,8 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userRegisterData)))
                         .andExpect(header().string("location", "/api/users/" + savedId))
-                        .andExpect(status().isCreated());
+                        .andExpect(status().isCreated())
+                        .andDo(UserDocumentation.createUser());
             }
         }
 
@@ -163,7 +170,8 @@ class UserControllerTest {
                         .andExpect(jsonPath("email").exists())
                         .andExpect(jsonPath("name").exists())
                         .andExpect(jsonPath("password").exists())
-                        .andExpect(status().isOk());
+                        .andExpect(status().isOk())
+                        .andDo(UserDocumentation.getUser());
             }
         }
 
@@ -193,7 +201,8 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + VALID_TOKEN)
                         .content(objectMapper.writeValueAsString(userUpdateData)))
-                        .andExpect(status().isOk());
+                        .andExpect(status().isOk())
+                        .andDo(UserDocumentation.updateUser());
             }
         }
 
@@ -237,7 +246,8 @@ class UserControllerTest {
                 mockMvc.perform(delete("/api/users/me")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + VALID_TOKEN))
-                        .andExpect(status().isNoContent());
+                        .andExpect(status().isNoContent())
+                        .andDo(UserDocumentation.deleteUser());
             }
         }
 

@@ -25,7 +25,7 @@ public class CartProduct {
 
     @Id
     @GeneratedValue
-    @Column(name = "cart_id")
+    @Column(name = "cart_product_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

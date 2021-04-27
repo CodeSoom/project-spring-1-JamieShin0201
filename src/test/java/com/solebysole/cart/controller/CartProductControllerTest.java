@@ -5,6 +5,7 @@ import com.solebysole.authentication.service.AuthenticationService;
 import com.solebysole.cart.application.CartProductService;
 import com.solebysole.cart.dto.CartProductCreateData;
 import com.solebysole.cart.dto.CartProductData;
+import com.solebysole.cart.dto.CartProductUpdateData;
 import com.solebysole.common.errors.CartProductNotFoundException;
 import com.solebysole.user.domain.Role;
 import com.solebysole.user.domain.User;
@@ -27,6 +28,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -59,6 +61,9 @@ class CartProductControllerTest {
 
     private CartProductCreateData cartProductCreateData;
     private CartProductCreateData invalidCartProductCreateData;
+
+    private CartProductUpdateData cartProductUpdateData;
+    private CartProductUpdateData invalidCartProductUpdateData;
     private User user;
 
     private List<CartProductData> cartProductDataList;
@@ -74,6 +79,14 @@ class CartProductControllerTest {
                 .build();
 
         invalidCartProductCreateData = CartProductCreateData.builder().build();
+
+        cartProductUpdateData = CartProductUpdateData.builder()
+                .count(5)
+                .build();
+
+        invalidCartProductUpdateData = CartProductUpdateData.builder()
+                .count(0)
+                .build();
 
         user = User.builder()
                 .id(existingUserId)
@@ -203,6 +216,72 @@ class CartProductControllerTest {
     }
 
     @Nested
+    @DisplayName("PATCH 요청은")
+    class Describe_PATCH {
+        @Nested
+        @DisplayName("존재하는 장바구니 상품 id가 주어진다면")
+        class Context_with_existing_cart_product_id {
+            @Test
+            @DisplayName("상태코드 200 OK 를 응답한다.")
+            void it_responds_status_code_200() throws Exception {
+                mockMvc.perform(patch("/api/cart/{id}", existingCartProductId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
+                        .content(objectMapper.writeValueAsString(cartProductUpdateData)))
+                        .andExpect(status().isOk());
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하지 않는 장바구니 상품 id가 주어진다면")
+        class Context_with_not_existing_cart_product_id {
+            @BeforeEach
+            void setUp() {
+                willThrow(new CartProductNotFoundException())
+                        .given(cartProductService)
+                        .updateCartProduct(any(Long.class), any(CartProductUpdateData.class));
+            }
+
+            @Test
+            @DisplayName("상태코드 400 Bad Request 를 응답한다.")
+            void it_responds_status_code_400() throws Exception {
+                mockMvc.perform(patch("/api/cart/{id}", notExistingCartProductId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
+                        .content(objectMapper.writeValueAsString(cartProductUpdateData)))
+                        .andExpect(status().isBadRequest());
+            }
+        }
+
+        @Nested
+        @DisplayName("올바르지 않은 상품 수정 정보가 주어진다면")
+        class Context_with_invalid_cart_product_update_data {
+            @Test
+            @DisplayName("상태코드 400 Bad Request 를 응답한다.")
+            void it_responds_status_code_400() throws Exception {
+                mockMvc.perform(patch("/api/cart/{id}", existingCartProductId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
+                        .content(objectMapper.writeValueAsString(invalidCartProductUpdateData)))
+                        .andExpect(status().isBadRequest());
+            }
+        }
+
+        @Nested
+        @DisplayName("알수 없는 사용자가 주어진다면")
+        class Context_with_anonymous_user {
+            @Test
+            @DisplayName("상태코드 401 Unauthorized 를 응답한다.")
+            void it_responds_status_code_401() throws Exception {
+                mockMvc.perform(patch("/api/cart/{id}", existingCartProductId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(cartProductUpdateData)))
+                        .andExpect(status().isUnauthorized());
+            }
+        }
+    }
+
+    @Nested
     @DisplayName("DELETE 요청은")
     class Describe_DELETE {
         @Nested
@@ -210,7 +289,7 @@ class CartProductControllerTest {
         class Context_with_existing_cart_product_id {
             @Test
             @DisplayName("상태코드 204 No Content 를 응답한다.")
-            void it_responds_status_code_201() throws Exception {
+            void it_responds_status_code_204() throws Exception {
                 mockMvc.perform(delete("/api/cart/{id}", existingCartProductId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + VALID_TOKEN))

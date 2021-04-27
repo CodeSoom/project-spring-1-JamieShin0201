@@ -4,6 +4,7 @@ import com.solebysole.cart.domain.CartProduct;
 import com.solebysole.cart.domain.CartProductRepository;
 import com.solebysole.cart.dto.CartProductCreateData;
 import com.solebysole.cart.dto.CartProductData;
+import com.solebysole.cart.dto.CartProductUpdateData;
 import com.solebysole.common.errors.CartProductNotFoundException;
 import com.solebysole.common.errors.ProductNotFoundException;
 import com.solebysole.product.domain.Product;
@@ -45,7 +46,7 @@ public class CartProductService {
     /**
      * 주어진 장바구니 상품 정보로 장바구니 상품을 생성하고, 만들어진 식별자를 리턴합니다.
      *
-     * @param cartProductCreateData 장바구니 상품 정보
+     * @param cartProductCreateData 장바구니 상품 생성 정보
      * @return 장바구니 상품 식별자
      * @throws ProductNotFoundException 상품이 존재하지 않을 경우
      */
@@ -68,6 +69,21 @@ public class CartProductService {
     }
 
     /**
+     * 주어진 id에 해당하는 장바구니 상품을 전달받은 정보로 변경합니다.
+     *
+     * @param id 장바구니 상품 식별자
+     * @param cartProductUpdateData 장바구니 상품 변경 정보
+     * @throws CartProductNotFoundException 장바구니 상품이 존재하지 않을 경우
+     */
+    @Transactional
+    public void updateCartProduct(Long id, CartProductUpdateData cartProductUpdateData)
+            throws CartProductNotFoundException {
+        CartProduct cartProduct = findCartProduct(id);
+
+        cartProduct.changeCount(cartProductUpdateData.getCount());
+    }
+
+    /**
      * 주어진 id에 해당하는 장바구니 상품을 삭제합니다.
      *
      * @param id 장바구니 상품 식별자
@@ -75,10 +91,14 @@ public class CartProductService {
      */
     @Transactional
     public void deleteCartProduct(Long id) throws CartProductNotFoundException {
-        CartProduct cartProduct = cartProductRepository.findById(id)
-                .orElseThrow(() -> new CartProductNotFoundException(id));
+        CartProduct cartProduct = findCartProduct(id);
 
         cartProductRepository.delete(cartProduct);
+    }
+
+    private CartProduct findCartProduct(Long id) {
+        return cartProductRepository.findById(id)
+                .orElseThrow(() -> new CartProductNotFoundException(id));
     }
 
 }

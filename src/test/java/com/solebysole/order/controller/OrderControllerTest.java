@@ -2,6 +2,8 @@ package com.solebysole.order.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solebysole.authentication.service.AuthenticationService;
+import com.solebysole.common.RestDocsConfiguration;
+import com.solebysole.docs.OrderDocumentation;
 import com.solebysole.order.application.OrderService;
 import com.solebysole.order.domain.Address;
 import com.solebysole.order.dto.OrderCreateData;
@@ -13,10 +15,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -28,6 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("OrderController 클래스")
+@Import(RestDocsConfiguration.class)
+@AutoConfigureRestDocs
 @WebMvcTest(OrderController.class)
 class OrderControllerTest {
 
@@ -58,8 +63,6 @@ class OrderControllerTest {
     private OrderProductData orderProductData1;
     private OrderProductData orderProductData2;
 
-
-    @WithMockUser
     @BeforeEach
     void setUp() {
         user = User.builder()
@@ -118,7 +121,8 @@ class OrderControllerTest {
                         .header("Authorization", "Bearer " + VALID_TOKEN)
                         .content(objectMapper.writeValueAsString(orderCreateData)))
                         .andExpect(header().string("location", "/api/order/" + savedId))
-                        .andExpect(status().isCreated());
+                        .andExpect(status().isCreated())
+                        .andDo(OrderDocumentation.createOrder());
             }
         }
 

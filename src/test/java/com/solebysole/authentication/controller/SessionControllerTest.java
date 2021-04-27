@@ -3,14 +3,18 @@ package com.solebysole.authentication.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solebysole.authentication.dto.SessionRequestData;
 import com.solebysole.authentication.service.AuthenticationService;
+import com.solebysole.common.RestDocsConfiguration;
 import com.solebysole.common.errors.LoginFailException;
+import com.solebysole.docs.AuthenticationDocumentation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -23,6 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("SessionController 클래스")
+@Import(RestDocsConfiguration.class)
+@AutoConfigureRestDocs
 @WebMvcTest(SessionController.class)
 class SessionControllerTest {
 
@@ -71,7 +77,8 @@ class SessionControllerTest {
                         .content(objectMapper.writeValueAsString(validSessionRequestData)))
                         .andExpect(status().isCreated())
                         .andExpect(jsonPath("accessToken").exists())
-                        .andExpect(content().string(containsString(".")));
+                        .andExpect(content().string(containsString(".")))
+                        .andDo(AuthenticationDocumentation.createSession());
             }
         }
 

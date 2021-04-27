@@ -1,11 +1,14 @@
 package com.solebysole.product.controller;
 
+import com.solebysole.authentication.CurrentUser;
 import com.solebysole.product.application.ProductService;
 import com.solebysole.product.dto.ProductCreateData;
 import com.solebysole.product.dto.ProductData;
 import com.solebysole.product.dto.ProductDetailData;
+import com.solebysole.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,11 +54,15 @@ public class ProductController {
     /**
      * 주어진 상품 정보로 상품을 생성합니다.
      *
+     * @param user 현재 회원
      * @param productCreateData 상품 정보
      * @return 응답 정보
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody @Valid ProductCreateData productCreateData) {
+    public ResponseEntity<Void> create(
+            @CurrentUser User user,
+            @RequestBody @Valid ProductCreateData productCreateData) {
         Long savedId = productService.createProduct(productCreateData);
         return ResponseEntity.created(URI.create("/api/products/" + savedId)).build();
     }

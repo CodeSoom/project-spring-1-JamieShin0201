@@ -15,14 +15,19 @@ export default function SignUpFormContainer() {
 
   const history = useHistory();
 
-  function onSignUp() {
+  async function onSignUp() {
     const signUpForm = {
       email: emailRef.current.value,
       name: nameRef.current.value,
       password: passwordRef.current.value,
     };
 
-    postSignUp(signUpForm);
+    const response = await postSignUp(signUpForm);
+    if (response.status !== 200) {
+      alert('회원가입에 실패하였습니다.');
+      return;
+    }
+
     history.push('/login');
   }
 
